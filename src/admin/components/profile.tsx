@@ -16,7 +16,7 @@ const ProfileForm: React.FC = () => {
     linkedin: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  //const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
@@ -43,11 +43,12 @@ const ProfileForm: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setErrors((prev) => ({ ...prev, photo: "Only image files are allowed" }));
+        //setErrors((prev) => ({ ...prev, photo: "Only image files are allowed" }));
+        showToast("Only image files are allowed" , "error");
         return;
       }
       setPhoto(file);
-      setErrors((prev) => ({ ...prev, photo: "" }));
+      //setErrors((prev) => ({ ...prev, photo: "" }));
       const reader = new FileReader();
       reader.onload = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -75,7 +76,7 @@ const ProfileForm: React.FC = () => {
     if (formData.linkedin && !urlPattern.test(formData.linkedin))
       newErrors.linkedin = "Please enter a valid LinkedIn URL.";
 
-    setErrors(newErrors);
+    //setErrors(newErrors);
     const firstErrorKey = Object.keys(newErrors)[0];
     if (firstErrorKey) {
       showToast(newErrors[firstErrorKey], "error");
