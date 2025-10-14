@@ -9,12 +9,24 @@ import Education from "./components/education";
 import Contact from "./components/contact";
 import Experiences from "./components/experience";
 import Certification from "./components/certifications";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("Profile");
+  const navigate = useNavigate();
+  const auth = getAuth();
 
   const handleMenuClick = (page: string) => {
+    if (page === "Logout") {
+      signOut(auth)
+        .then(() => {
+          navigate("/login");
+        })
+        .catch((error) => console.error("Logout error:", error));
+      return;
+    }
     setActivePage(page);
     setSidebarOpen(false);
   };
@@ -26,6 +38,7 @@ const Dashboard = () => {
         isOpen={sidebarOpen} 
         closeSidebar={() => setSidebarOpen(false)} 
         onMenuClick={handleMenuClick} 
+        activePage={activePage}
       />
 
       {/* Main Content Area */}
@@ -58,7 +71,6 @@ const Dashboard = () => {
           {activePage === "Certifications" && <Certification/>}
           {activePage === "Education" && <Education/>}
           {activePage === "Contact" && <Contact/>}
-          {activePage === "Logout" && <div>Logout clicked</div>}
         </main>
       </div>
     </div>

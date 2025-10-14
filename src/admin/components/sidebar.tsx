@@ -6,9 +6,10 @@ interface SidebarProps {
   isOpen: boolean;
   closeSidebar: () => void;
   onMenuClick: (page: string) => void;
+  activePage: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick, activePage }) => {
   const menuItems = [
     "Profile",
     "About Me",
@@ -53,7 +54,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick }) 
           <button
             key={item}
             onClick={() => onMenuClick(item)}
-            className="w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-300 border-b border-gray-300 font-medium"
+            className={clsx(
+              "w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-300 border-b border-gray-300 font-medium",
+              { "bg-gray-500 text-white": activePage === item }
+            )}
+            //className="w-full text-left px-6 py-3 text-gray-700 hover:bg-gray-300 border-b border-gray-300 font-medium"
           >
             {item}
           </button>
