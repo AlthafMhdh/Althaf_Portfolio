@@ -16,8 +16,8 @@ const Projects: React.FC = () => {
     github: "",
     website: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  //const [errors, setErrors] = useState<Record<string, string>>({});
+  //const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   useEffect(() => {
@@ -43,11 +43,12 @@ const Projects: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setErrors((prev) => ({ ...prev, photo: "Only image files are allowed" }));
+        //setErrors((prev) => ({ ...prev, photo: "Only image files are allowed" }));
+        showToast("Only image files are allowed" , "error");
         return;
       }
       setPhoto(file);
-      setErrors((prev) => ({ ...prev, photo: "" }));
+      //setErrors((prev) => ({ ...prev, photo: "" }));
       const reader = new FileReader();
       reader.onload = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -61,7 +62,7 @@ const Projects: React.FC = () => {
     if (!formData.about.trim()) newErrors.about = "About project is required.";
     if (!formData.technologies.trim()) newErrors.technologies = "Used technologies are required.";
 
-    setErrors(newErrors);
+    //setErrors(newErrors);
     const firstErrorKey = Object.keys(newErrors)[0];
     if (firstErrorKey) {
       showToast(newErrors[firstErrorKey], "error");
@@ -76,7 +77,7 @@ const Projects: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!validate()) return;
-      setLoading(true);
+      //setLoading(true);
   
       try{
         let photoUrl = preview || '';
@@ -111,7 +112,7 @@ const Projects: React.FC = () => {
         });
         setPreview(null);
         setPhoto(null);
-        setLoading(false);
+        //setLoading(false);
       }
   };
 
