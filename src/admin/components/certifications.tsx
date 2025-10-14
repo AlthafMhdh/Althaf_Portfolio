@@ -1,20 +1,5 @@
-import { useState } from "react";
 
 const Certification: React.FC = () => {
-  const [isModalOpen, setModalOpen] = useState();
-  const [photo, setPhoto] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-
-  const [formData, setFormData] = useState({
-    projectName: "",
-    about: "",
-    technologies: "",
-    github: "",
-    website: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   return (
     <div className="bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto p-6 sm:p-10">

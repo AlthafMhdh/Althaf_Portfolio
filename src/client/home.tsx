@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, orderBy, limit } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [popularLocations, setPopularLocations] = useState<{ city: string; count: number }[]>([]);
 
   
 
@@ -68,34 +62,7 @@ const Home: React.FC = () => {
             <h2 className="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Popular Locations</h2>
 
             <div className="flex-1 overflow-y-auto custom-scrollbar">
-              {popularLocations.length === 0 ? (
-                <p className="text-gray-400 italic text-center mt-6">No locations found</p>
-              ) : (
-                <ul className="space-y-3">
-                  {popularLocations.map((loc, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-center justify-between p-2 rounded-lg bg-gray-50 hover:bg-primary/10 transition-colors duration-200"
-                    >
-                      <Link
-                        to={`/ads?city=${encodeURIComponent(loc.city)}`}
-                        className="flex items-center justify-between w-full"
-                      >
-                        <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 flex items-center justify-center rounded-full bg-primary/20 text-primary text-xs font-bold">
-                          {loc.city.charAt(0).toUpperCase()}
-                        </span>
-                        <span className="text-gray-700 font-medium">{loc.city}</span>
-                        </div>
-                        <span className="text-xs px-2 py-1 bg-primary text-white rounded-full shadow-md">
-                          {loc.count} ads
-                        </span>
-                      </Link>
-                      
-                    </li>
-                  ))}
-                </ul>
-              )}
+              
             </div>
           </div>
 
