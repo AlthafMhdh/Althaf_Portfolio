@@ -1,14 +1,28 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Toast from "./toast";
+import ProjectCart from "./ui/projectCart";
+
+interface Project {
+  id: string;
+  projectName: string;
+  about: string;
+  technologies: string;
+  github?: string;
+  website?: string;
+  photoUrl?: string;
+  createdAt?: any;
+  updatedAt?: any;
+}
 
 const Projects: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-
+  const [projects, setProjects] = useState<any[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     projectName: "",
     about: "",
@@ -16,39 +30,29 @@ const Projects: React.FC = () => {
     github: "",
     website: "",
   });
-  //const [errors, setErrors] = useState<Record<string, string>>({});
-  //const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
+  const projectRef = doc(db, "portfolio", "projects");
+
   useEffect(() => {
-    const fetchProfile = async () => {
-      const projectRef = doc(db, "portfolio", "projects");
-      const projectSnap = await getDoc(projectRef);
-      if (projectSnap.exists()) {
-        const data = projectSnap.data();
-        setFormData({
-          projectName: data.projectName || "",
-          about: data.about || "",
-          technologies: data.technologies || "",
-          github: data.github || "",
-          website: data.website || "",
-        });
-        if (data.photoUrl) setPreview(data.photoUrl);
+    const fetchProjects = async () => {
+      const snap = await getDoc(projectRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        setProjects(data.items || []);
       }
     };
-    fetchProfile();
+    fetchProjects();
   }, []);
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
-        //setErrors((prev) => ({ ...prev, photo: "Only image files are allowed" }));
         showToast("Only image files are allowed" , "error");
         return;
       }
       setPhoto(file);
-      //setErrors((prev) => ({ ...prev, photo: "" }));
       const reader = new FileReader();
       reader.onload = () => setPreview(reader.result as string);
       reader.readAsDataURL(file);
@@ -62,7 +66,6 @@ const Projects: React.FC = () => {
     if (!formData.about.trim()) newErrors.about = "About project is required.";
     if (!formData.technologies.trim()) newErrors.technologies = "Used technologies are required.";
 
-    //setErrors(newErrors);
     const firstErrorKey = Object.keys(newErrors)[0];
     if (firstErrorKey) {
       showToast(newErrors[firstErrorKey], "error");
@@ -77,25 +80,38 @@ const Projects: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!validate()) return;
-      //setLoading(true);
   
       try{
         let photoUrl = preview || '';
-  
+
         if (photo) {
-          const photoRef = ref(storage, 'photoes/${Date.now()}_${photo.name}');
+          const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
           await uploadBytes(photoRef, photo);
           photoUrl = await getDownloadURL(photoRef);
         }
-  
-        await setDoc(doc(db, "portfolio", "project"), {
+
+        const newProject: Project = {
+          id: editingIndex !== null ? projects[editingIndex].id : Date.now().toString(),
           ...formData,
           photoUrl,
           updatedAt: new Date(),
-        });
-        //showToast("Profile saved successfully!", "success");
+          createdAt: editingIndex !== null ? projects[editingIndex].createdAt : new Date(),
+        };
+
+        let updatedProjects = [...projects];
+        if (editingIndex !== null) {
+          updatedProjects[editingIndex] = newProject;
+        } else {
+          updatedProjects.push(newProject);
+        }
+
+        await setDoc(projectRef, { items: updatedProjects });
+        setProjects(updatedProjects);
+        //showToast(editingIndex !== null ? "Project updated!" : "Project added!", "success");
+        alert(editingIndex !== null ? "Project updated successfully!" : "Project added successfully!");
         setIsModalOpen(false);
-        alert("Project saved successfully!");
+        resetForm();
+
       }
       catch (error){
         console.error("Error saving profile:", error);
@@ -116,6 +132,42 @@ const Projects: React.FC = () => {
       }
   };
 
+  const resetForm = () => {
+    setFormData({
+      projectName: "",
+      about: "",
+      technologies: "",
+      github: "",
+      website: "",
+    });
+    setPreview(null);
+    setPhoto(null);
+    setEditingIndex(null);
+  };
+
+  const handleEdit = (project: Project) => {
+    const index = projects.findIndex((p) => p.id === project.id);
+    setEditingIndex(index);
+    setFormData({
+      projectName: project.projectName,
+      about: project.about,
+      technologies: project.technologies,
+      github: project.github || "",
+      website: project.website || "",
+    });
+    setPreview(project.photoUrl || null);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this project?")) return;
+    const updatedProjects = projects.filter((p) => p.id !== id);
+    await updateDoc(projectRef, { items: updatedProjects });
+    setProjects(updatedProjects);
+    //showToast("Project deleted successfully!", "success");
+    alert("Project deleted successfully!");
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto p-6 sm:p-10">
       <div className="flex flex-col mb-6 sm:mb-0">
@@ -124,7 +176,7 @@ const Projects: React.FC = () => {
         </h2>
       </div>
 
-      <div className="flex justify-end items-center">
+      {/* <div className="flex justify-end items-center">
         <button 
           type="submit"
           onClick={() => setIsModalOpen(true)}
@@ -132,13 +184,45 @@ const Projects: React.FC = () => {
         >
           +Add New Project
         </button>
-      </div>
+      </div> */}
 
+      {projects.length === 0 ? (
+        <div className="text-center text-gray-500 mb-6">
+          <p>You have no projects. Please add your first project.</p>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+          >
+            + Add New Project
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+            >
+              + Add New Project
+            </button>
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <ProjectCart
+                key={project.id}
+                project={project}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex p-6 justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative animate-slideIn">
             {/* Close Button */}
             <button
@@ -149,7 +233,7 @@ const Projects: React.FC = () => {
             </button>
 
             <h3 className="text-xl font-semibold text-gray-700 mb-4">
-              Add New Project
+              {editingIndex ? "Edit Project" : "Add New Project"}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -245,7 +329,7 @@ const Projects: React.FC = () => {
                   type="submit"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
                 >
-                  Save Project
+                  {editingIndex ? "Update Project" : "Save Project"}
                 </button>
               </div>
             </form>

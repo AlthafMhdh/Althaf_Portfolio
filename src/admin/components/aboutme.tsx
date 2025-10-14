@@ -4,8 +4,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Toast from "./toast";
 
-
-
 const AboutMe: React.FC = () => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -80,7 +78,7 @@ const AboutMe: React.FC = () => {
       let photoUrl = preview || '';
 
       if (photo) {
-        const photoRef = ref(storage, 'photoes/${Date.now()}_${photo.name}');
+        const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
         await uploadBytes(photoRef, photo);
         photoUrl = await getDownloadURL(photoRef);
       }

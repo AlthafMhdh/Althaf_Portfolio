@@ -67,12 +67,12 @@ const Contact: React.FC = () => {
                 ...formData,
                 updatedAt: new Date(),
             });
-            showToast("Profile saved successfully!", "success");
+            showToast("Contact details saved successfully!", "success");
             //alert("Contact details saved successfully!");   
         }
         catch (error){
             console.error("Error saving profile:", error);
-            showToast("Failed to save profile. Try again.", "error");
+            showToast("Failed to save contact details. Try again.", "error");
             //alert("Failed to save profile");
         }
         finally{

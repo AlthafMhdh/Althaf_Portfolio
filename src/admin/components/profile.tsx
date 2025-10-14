@@ -97,7 +97,7 @@ const ProfileForm: React.FC = () => {
       let photoUrl = preview || '';
 
       if (photo) {
-        const photoRef = ref(storage, 'photoes/${Date.now()}_${photo.name}');
+        const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
         await uploadBytes(photoRef, photo);
         photoUrl = await getDownloadURL(photoRef);
       }
