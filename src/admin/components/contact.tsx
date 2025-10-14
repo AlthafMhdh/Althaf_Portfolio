@@ -14,7 +14,6 @@ const Contact: React.FC = () => {
         tiktok: "",
     });
     
-    const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
     const [showSocial, setShowSocial] = useState(false);
     const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -46,7 +45,7 @@ const Contact: React.FC = () => {
         if (!formData.email.trim()) newErrors.email = "Email address is required.";
         if (!formData.phone.trim()) newErrors.phone = "Phone number is required.";
     
-        setErrors(newErrors);
+        //setErrors(newErrors);
         const firstErrorKey = Object.keys(newErrors)[0];
     if (firstErrorKey) {
       showToast(newErrors[firstErrorKey], "error");
@@ -91,17 +90,6 @@ const Contact: React.FC = () => {
     return (
         <div className="bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto p-6 sm:p-6">
             
-            <style>
-                {`
-                @keyframes slideIn {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .animate-slideIn {
-                    animation: slideIn 0.4s ease-out;
-                }
-                `}
-            </style>
             <div className="flex flex-col items-center mb-6 sm:mb-0">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-0">
                 Contact Section
