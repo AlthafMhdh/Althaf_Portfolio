@@ -41,8 +41,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick, ac
       {/* Mobile Close Button */}
       <div className="md:hidden flex justify-end p-3">
         <button
+          type="button"
           onClick={closeSidebar}
           className="p-2 rounded-full hover:bg-gray-300 text-gray-700"
+          title="Toggle Sidebar Close"
         >
           <FaTimes size={12} />
         </button>

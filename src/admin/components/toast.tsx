@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type ToastProps = {
   message: string;
@@ -10,6 +10,14 @@ const Toast: React.FC<ToastProps> = ({ message, type, onClose }) => {
   const bgColor = type === "success" ? "bg-green-100" : "bg-red-100";
   const textColor = type === "success" ? "text-green-800" : "text-red-800";
   const borderColor = type === "success" ? "border-green-300" : "border-red-300";
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
 
   return (
     <div

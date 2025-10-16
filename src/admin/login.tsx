@@ -57,7 +57,13 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 to-blue-600 px-4">
+    //bg-gradient-to-br from-indigo-500 to-blue-600 px-4
+    // <div className="flex min-h-screen items-center justify-center ">
+    <div className="flex flex-col min-h-screen items-center justify-center">
+
+      <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-indigo-600 animate-fadeIn">
+        Welcome to Portfolio Customization
+      </h1>
       <div className="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 sm:p-10 animate-fadeIn">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           {showForgot ? "Reset Password" : "Admin Login"}

@@ -8,12 +8,16 @@ import Toast from "./toast";
 const ProfileForm: React.FC = () => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [resume, setResume] = useState<File | null>(null);
+  const [resumeName, setResumeName] = useState<string>("");
+  const [existingResumeUrl, setExistingResumeUrl] = useState<string>("");
   const [formData, setFormData] = useState({
     name: "",
     position: "",
     startNote: "",
     github: "",
     linkedin: "",
+    resumeUrl: "",
   });
 
   //const [errors, setErrors] = useState<Record<string, string>>({});
@@ -32,8 +36,16 @@ const ProfileForm: React.FC = () => {
           startNote: data.startNote || "",
           github: data.github || "",
           linkedin: data.linkedin || "",
+          resumeUrl: data.resumeUrl || "",
         });
         if (data.photoUrl) setPreview(data.photoUrl);
+        if (data.resumeUrl) {
+          setExistingResumeUrl(data.resumeUrl);
+          const decodedUrl = decodeURIComponent(data.resumeUrl);
+          const match = decodedUrl.match(/\/o\/resumes\/([^?]+)/);
+          const resumeFileName = match ? match[1] : "Uploaded Resume";
+          setResumeName(resumeFileName);
+        }
       }
     };
     fetchProfile();
@@ -55,6 +67,19 @@ const ProfileForm: React.FC = () => {
     }
   };
 
+  const handleResumeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type !== "application/pdf") {
+        showToast("Only Pdf files are allowed as resume", "error");
+        return;
+      }
+      setResume(file);
+      setResumeName(file.name);
+      setExistingResumeUrl(""); 
+    }
+  };
+
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setFormData({...formData, [e.target.placeholder.toLowerCase()]: e.target.value})
   // }
@@ -67,6 +92,7 @@ const ProfileForm: React.FC = () => {
     if (!formData.startNote.trim()) newErrors.startNote = "Start note is required.";
     if (!formData.github.trim()) newErrors.github = "Github link is required.";
     if (!formData.linkedin.trim()) newErrors.linkedin = "Linkedin url is required.";
+    if (!formData.resumeUrl && !resume) newErrors.resume = "Resume is required.";
 
     const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
 
@@ -95,6 +121,7 @@ const ProfileForm: React.FC = () => {
 
     try{
       let photoUrl = preview || '';
+      let resumeUrl = formData.resumeUrl || "";
 
       if (photo) {
         const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
@@ -102,9 +129,16 @@ const ProfileForm: React.FC = () => {
         photoUrl = await getDownloadURL(photoRef);
       }
 
+      if (resume) {
+        const resumeRef = ref(storage, `resumes/${resume.name}`);
+        await uploadBytes(resumeRef, resume);
+        resumeUrl = await getDownloadURL(resumeRef);
+      }
+
       await setDoc(doc(db, "portfolio", "profile"), {
         ...formData,
         photoUrl,
+        resumeUrl,
         updatedAt: new Date(),
       });
       showToast("Profile saved successfully!", "success");
@@ -121,7 +155,8 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg w-full max-w-7xl mx-auto p-6 sm:p-10">
+    //bg-white rounded-xl shadow-lg
+    <div className="w-full max-w-7xl mx-auto p-6 sm:p-10">
       
       <div className="flex flex-col items-center mb-6 sm:mb-0">
         <label className="relative flex flex-col items-center justify-center w-32 h-32 md:w-48 md:h-48 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300">
@@ -210,6 +245,33 @@ const ProfileForm: React.FC = () => {
               onChange={(e) => setFormData({...formData, linkedin: e.target.value})}
               className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
             />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Resume</label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="file"
+                id="resumeUpload"
+                title="Upload Resume"
+                aria-label="Upload Resume"
+                className="block w-full text-sm text-gray-700 border rounded px-3 py-2 cursor-pointer focus:ring focus:ring-blue-200"
+                accept=".pdf"
+                onChange={handleResumeUpload}
+              />
+            </div>
+            {resumeName && (
+              existingResumeUrl ? (
+                <p
+                  className="text-indigo-600 text-xs mt-1 cursor-pointer hover:underline"
+                  onClick={() => window.open(existingResumeUrl, "_blank")}
+                >
+                  {resumeName}
+                </p>
+              ) : (
+                <p className="text-gray-500 text-xs mt-1">{resumeName}</p>
+              )
+            )}
           </div>
 
           <button 

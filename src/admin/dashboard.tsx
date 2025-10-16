@@ -9,14 +9,14 @@ import Education from "./components/education";
 import Contact from "./components/contact";
 import Experiences from "./components/experience";
 import Certification from "./components/certifications";
-import { getAuth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase/config";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("Profile");
   const navigate = useNavigate();
-  const auth = getAuth();
 
   const handleMenuClick = (page: string) => {
     if (page === "Logout") {
@@ -46,8 +46,11 @@ const Dashboard = () => {
         {/* Header (visible on mobile only) */}
         <header className="md:hidden flex items-center justify-between bg-gray-200 p-3">
           <button
+            type="button"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 rounded hover:bg-gray-300 text-gray-700"
+            title="Toggle Sidebar"
+            aria-label="Toggle Sidebar"
           >
             <FaBars />
           </button>
