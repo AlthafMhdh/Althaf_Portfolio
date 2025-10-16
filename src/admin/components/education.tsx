@@ -188,35 +188,15 @@ const Education: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-2 sm:p-10">
-      {/* <div className="flex flex-col items-start mb-6 sm:mb-0">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-          My Education
-        </h2>
-      </div>
-
-      <div className="flex justify-end items-center">
-        <button 
-          type="submit"
-          onClick={() => setIsModalOpen(true)}
-          className=" bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 sm:mt-2"
-        >
-        + Add Education
-        </button>
-      </div> */}
+    <div className="w-full max-w-7xl mx-auto p-2 sm:p-2">
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-700">My Education</h2>
         <button
-          // onClick={() => {
-          //   resetForm();
-          //   setIsModalOpen(true)
-          // }}
-
           onClick={() => {
-    resetForm();
-    setIsModalOpen(true);
-  }}
+            resetForm();
+            setIsModalOpen(true)
+          }}
           className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
         >
           + Add Education

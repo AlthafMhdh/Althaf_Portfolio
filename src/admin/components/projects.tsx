@@ -169,65 +169,36 @@ const Projects: React.FC = () => {
   };
 
   return (
-    //bg-white rounded-xl shadow-lg
-    <div className="w-full max-w-7xl mx-auto p-6 sm:p-10">
-      <div className="flex flex-col mb-6 sm:mb-0">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-2">
-          My Projects
-        </h2>
-      </div>
-
-      {/* <div className="flex justify-end items-center">
-        <button 
-          type="submit"
-          onClick={() => setIsModalOpen(true)}
-          className=" bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 sm:mt-2"
+    <div className="w-full max-w-7xl mx-auto p-2 sm:p-2">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold text-gray-700">My Projects</h2>
+        <button
+          onClick={() => {
+            resetForm();
+            setIsModalOpen(true)
+          }}
+          className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
         >
-          +Add New Project
+          + Add New Project
         </button>
-      </div> */}
+      </div>
 
       {projects.length === 0 ? (
         <div className="text-center text-gray-500 mb-6">
           <p>You have no projects. Please add your first project.</p>
-          <button
-            //onClick={() => setIsModalOpen(true)}
-            onClick={() => {
-              resetForm();
-              setIsModalOpen(true);
-            }}
-            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-          >
-            + Add New Project
-          </button>
         </div>
-      ) : (
-        <>
-          <div className="flex justify-end mb-4">
-            <button
-              // onClick={() => setIsModalOpen(true)}
-              onClick={() => {
-              resetForm();
-              setIsModalOpen(true);
-            }}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
-            >
-              + Add New Project
-            </button>
-          </div>
+      ) : null}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <ProjectCart
-                key={project.id}
-                project={project}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map((project) => (
+          <ProjectCart
+            key={project.id}
+            project={project}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
 
       {/* Modal */}
       {isModalOpen && (

@@ -124,7 +124,8 @@ const ProfileForm: React.FC = () => {
       let resumeUrl = formData.resumeUrl || "";
 
       if (photo) {
-        const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
+        //const photoRef = ref(storage, `photos/${Date.now()}_${photo.name}`);
+        const photoRef = ref(storage, `photos/${photo.name}`);
         await uploadBytes(photoRef, photo);
         photoUrl = await getDownloadURL(photoRef);
       }
@@ -156,7 +157,7 @@ const ProfileForm: React.FC = () => {
 
   return (
     //bg-white rounded-xl shadow-lg
-    <div className="w-full max-w-7xl mx-auto p-6 sm:p-10">
+    <div className="w-full max-w-7xl mx-auto p-6 sm:p-2">
       
       <div className="flex flex-col items-center mb-6 sm:mb-0">
         <label className="relative flex flex-col items-center justify-center w-32 h-32 md:w-48 md:h-48 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300">

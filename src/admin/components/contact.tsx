@@ -89,7 +89,7 @@ const Contact: React.FC = () => {
 
     return (
         //bg-white rounded-xl shadow-lg
-        <div className="w-full max-w-7xl mx-auto p-6 sm:p-6">
+        <div className="w-full max-w-7xl mx-auto p-2 sm:p-2">
             
             <div className="flex flex-col items-center mb-6 sm:mb-0">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-0">

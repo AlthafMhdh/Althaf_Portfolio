@@ -219,7 +219,7 @@ const Experiences: React.FC = () => {
 
   return (
     //bg-white rounded-xl shadow-lg
-    <div className="w-full max-w-7xl mx-auto p-6 sm:p-10">
+    <div className="w-full max-w-7xl mx-auto p-2 sm:p-2">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-700">My Experience</h2>
         <button

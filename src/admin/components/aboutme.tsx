@@ -104,7 +104,7 @@ const AboutMe: React.FC = () => {
 
   return (
     //bg-white rounded-xl shadow-lg
-    <div className="w-full max-w-7xl mx-auto p-6 sm:p-10">
+    <div className="w-full max-w-7xl mx-auto p- sm:p-2">
       <div className="flex flex-col items-center mb-6 sm:mb-0">
         <h5 className="text-xl font-semibold text-gray-700 mb-0">
           Tell me about my self 
