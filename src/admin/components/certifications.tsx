@@ -161,7 +161,11 @@ const Certification: React.FC = () => {
             <div className="flex justify-end items-center">
                 <button 
                 type="submit"
-                onClick={() => setIsModalOpen(true)}
+                //onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                    resetForm();
+                    setIsModalOpen(true);
+                }}
                 className=" bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 sm:mt-2"
                 >
                 +New Certification

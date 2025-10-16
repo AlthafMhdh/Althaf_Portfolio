@@ -5,11 +5,12 @@ interface Education {
   level: "Higher Education" | "Professional Qualification" | "School Education";
   educationName: string;
   grade?: string;
-  instituteName: string;
+  instituteName?: string;
   logoUrl?: string;
   address: string;
-  startYear: string;
-  endYear: string;
+  startYear?: string;
+  endYear?: string;
+  duration?: string;
 }
 
 interface EducationCardProps {
@@ -39,7 +40,10 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, onEdit, onDele
 
       {/* Name & Institute */}
       <h3 className="font-semibold text-gray-700">{education.educationName}</h3>
-      <p className="text-gray-600 text-sm">{education.instituteName}</p>
+      {/* <p className="text-gray-600 text-sm">{education.instituteName}</p> */}
+      {(education.level === "Higher Education" || education.level === "Professional Qualification")  && education.grade && (
+        <p className="text-gray-600 text-sm">{education.instituteName}</p>
+      )}
 
       {/* Grade if Higher Education */}
       {education.level === "Higher Education" && education.grade && (
@@ -48,9 +52,18 @@ const EducationCard: React.FC<EducationCardProps> = ({ education, onEdit, onDele
 
       {/* Address & Year */}
       <p className="text-gray-400 text-sm">{education.address}</p>
-      <p className="text-gray-400 text-sm">
+      {/* <p className="text-gray-400 text-sm">
         {education.startYear} - {education.endYear}
-      </p>
+      </p> */}
+      {(education.level === "Higher Education" || education.level === "School Education")  && education.startYear && education.endYear && (
+        <p className="text-gray-400 text-sm">
+          {education.startYear} - {education.endYear}
+        </p>
+      )}
+
+      {education.level === "Professional Qualification" && education.duration && (
+        <p className="text-gray-400 text-sm">{education.duration}</p>
+      )}
 
       {/* Action Buttons */}
       <div className="flex space-x-2 mt-3">

@@ -10,11 +10,11 @@ interface Education {
   level: "Higher Education" | "Professional Qualification" | "School Education";
   educationName: string;
   grade?: string;
-  instituteName: string;
+  instituteName?: string;
   logoUrl?: string;
   address: string;
-  startYear: string;
-  endYear: string;
+  startYear?: string;
+  endYear?: string;
   duration?: string;
   createdAt?: any;
   updatedAt?: any;
@@ -71,14 +71,34 @@ const Education: React.FC = () => {
   const validate = () => {
     const errors: string[] = [];
     if (!formData.educationName) errors.push("Education name is required");
-    // if (!formData.instituteName) errors.push("Institute/University name is required");
     if (!formData.address) errors.push("Address is required");
-    if (!formData.startYear) errors.push("Start year is required");
-    if (!formData.endYear) errors.push("End year is required");
 
-    if (formData.level === "Higher Education" || formData.level === "Professional Qualification" && !formData.instituteName) errors.push("Institute/University name is required");
-    if (formData.level === "Higher Education" && !formData.grade) errors.push("Grade is required for Higher Education");
-    if (formData.level === "Professional Qualification" && !formData.duration) errors.push("Course duration is required");
+    if (
+      (formData.level === "Higher Education" ||
+        formData.level === "Professional Qualification") &&
+      !formData.instituteName
+    )
+      errors.push("Institute/University name is required");
+
+    if (formData.level === "Higher Education" && !formData.grade)
+      errors.push("Grade is required for Higher Education");
+
+    if (formData.level === "Professional Qualification" && !formData.duration)
+      errors.push("Course duration is required");
+
+    if (
+      (formData.level === "Higher Education" ||
+        formData.level === "School Education") &&
+      !formData.startYear
+    )
+      errors.push("Start year is required");
+
+    if (
+      (formData.level === "Higher Education" ||
+        formData.level === "School Education") &&
+      !formData.endYear
+    )
+      errors.push("End year is required");
 
     if (!preview && !editingIndex) errors.push("Logo is required");
 
@@ -107,10 +127,10 @@ const Education: React.FC = () => {
         level: formData.level!,
         educationName: formData.educationName!,
         grade: formData.grade,
-        instituteName: formData.instituteName!,
+        instituteName: formData.instituteName,
         address: formData.address!,
-        startYear: formData.startYear!,
-        endYear: formData.endYear!,
+        startYear: formData.startYear,
+        endYear: formData.endYear,
         duration: formData.duration,
         logoUrl,
         createdAt: editingIndex !== null ? educations[editingIndex].createdAt : new Date(),
@@ -123,12 +143,14 @@ const Education: React.FC = () => {
 
       await setDoc(educationRef, { items: updatedEducations });
       setEducations(updatedEducations);
-      showToast(editingIndex !== null ? "Education updated!" : "Education added!", "success");
+      // showToast(editingIndex !== null ? "Education updated!" : "Education added!", "success");
+      alert(editingIndex !== null ? "Education details updated successfully!" : "Education details added successfully!");
       setIsModalOpen(false);
       resetForm();
     } catch (err) {
       console.error(err);
-      showToast("Failed to save education", "error");
+      //showToast("Failed to save education", "error");
+      alert("Failed to save education details");
     }
   };
 
@@ -161,7 +183,8 @@ const Education: React.FC = () => {
     const updatedEducations = educations.filter((e) => e.id !== id);
     await updateDoc(educationRef, { items: updatedEducations });
     setEducations(updatedEducations);
-    showToast("Education deleted!", "success");
+    //showToast("Education deleted!", "success");
+    alert("Education details deleted successfully!");
   };
 
   return (
@@ -185,7 +208,15 @@ const Education: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-700">My Education</h2>
         <button
-          onClick={() => setIsModalOpen(true)}
+          // onClick={() => {
+          //   resetForm();
+          //   setIsModalOpen(true)
+          // }}
+
+          onClick={() => {
+    resetForm();
+    setIsModalOpen(true);
+  }}
           className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
         >
           + Add Education
@@ -213,7 +244,11 @@ const Education: React.FC = () => {
         <div className="fixed inset-0 bg-opacity-40 flex p-6 items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative animate-slideIn">
             <button
-              onClick={() => setIsModalOpen(false)}
+              // onClick={() => setIsModalOpen(false)}
+              onClick={() => {
+                resetForm();
+                setIsModalOpen(false);
+              }}
               className="absolute top-3 right-4 text-gray-600 text-2xl font-bold hover:text-red-500"
             >
               ×
