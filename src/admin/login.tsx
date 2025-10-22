@@ -3,7 +3,6 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/aut
 import { auth } from "../firebase/config";
 import Toast from "./components/toast";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa6";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
