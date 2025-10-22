@@ -15,6 +15,7 @@ const ProfileForm: React.FC = () => {
     name: "",
     position: "",
     startNote: "",
+    note: "",
     github: "",
     linkedin: "",
     resumeUrl: "",
@@ -34,6 +35,7 @@ const ProfileForm: React.FC = () => {
           name: data.name || "",
           position: data.position || "",
           startNote: data.startNote || "",
+          note: data.note || "",
           github: data.github || "",
           linkedin: data.linkedin || "",
           resumeUrl: data.resumeUrl || "",
@@ -90,6 +92,7 @@ const ProfileForm: React.FC = () => {
     if (!formData.name.trim()) newErrors.name = "Name is required.";
     if (!formData.position.trim()) newErrors.position = "Position is required.";
     if (!formData.startNote.trim()) newErrors.startNote = "Start note is required.";
+    if (!formData.note.trim()) newErrors.note = "Special note is required.";
     if (!formData.github.trim()) newErrors.github = "Github link is required.";
     if (!formData.linkedin.trim()) newErrors.linkedin = "Linkedin url is required.";
     if (!formData.resumeUrl && !resume) newErrors.resume = "Resume is required.";
@@ -222,6 +225,17 @@ const ProfileForm: React.FC = () => {
               placeholder="Start Note"
               value={formData.startNote}
               onChange={(e) => setFormData({...formData, startNote: e.target.value})}
+              className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Note</label>
+            <input
+              type="text"
+              placeholder="Special Note"
+              value={formData.note}
+              onChange={(e) => setFormData({...formData, note: e.target.value})}
               className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
             />
           </div>
