@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/aut
 import { auth } from "../firebase/config";
 import Toast from "./components/toast";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa6";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -113,6 +114,7 @@ const Login: React.FC = () => {
             >
               Forgot password?
             </button>
+
           ) : (
             <button
               onClick={() => setShowForgot(false)}
@@ -121,6 +123,13 @@ const Login: React.FC = () => {
               Back to login
             </button>
           )}
+
+          <button
+            onClick={() => navigate("/")}
+            className="text-gray-500 hover:text-indigo-600 hover:underline text-sm block mt-2 mx-auto transition duration-200"
+          >
+            Back to Home
+          </button>
         </div>
 
         {toast && (

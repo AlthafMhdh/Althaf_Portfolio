@@ -55,7 +55,7 @@ const Home: React.FC = () => {
     fetchProfile();
   }, []);
 
-
+ 
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
       {/* Navbar */}
@@ -80,6 +80,17 @@ const Home: React.FC = () => {
             >
             </button>
           } 
+
+          <a
+            href={profile?.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 font-bold rounded-full bg-blue-600 text-white hover:bg-blue-700 transition hidden sm:inline-block"
+            //className="px-6 py-2 border font-bold rounded-full text-black bg-gray-200 border-black transition-colors duration-300 hover:bg-black hover:text-white dark:bg-gray-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+            title="View Resume"
+          >
+            My Resume
+          </a>
 
           <button
             type="button"
@@ -128,6 +139,18 @@ const Home: React.FC = () => {
                     <FaLinkedin className="text-4xl hover:text-indigo-500" />
                   </a>
                 )}
+              </div>
+
+              <div className="flex justify-center mt-6 sm:justify-start sm:hidden space-x-4">
+                <a
+                  href={profile.resumeUrl} // link to resume PDF
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  //className="px-6 py-2 border font-bold rounded-full text-black bg-gray-200 border-black transition-colors duration-300 hover:bg-black hover:text-white dark:bg-gray-800 dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
+                className="px-6 py-2 font-bold rounded-full bg-blue-600 text-white hover:bg-blue-700 transition"
+                >
+                  View Resume
+                </a>
               </div>
             </div>
           </>
