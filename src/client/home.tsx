@@ -1,199 +1,37 @@
-// import React, { useEffect, useState } from "react";
-// import { doc, getDoc } from "firebase/firestore";
-// import { FaMoon, FaSun } from "react-icons/fa";
-// import { db } from "../firebase/config";
-
-// interface ProfileData {
-//   name: string;
-//   position: string;
-//   startNote: string;
-//   github: string;
-//   linkedin: string;
-//   photoUrl: string;
-//   about?: string;
-//   education?: { degree: string; institution: string; year: string }[];
-//   experience?: { title: string; company: string; duration: string }[];
-//   skills?: string[];
-//   contact?: { email: string; phone: string; location: string };
-// }
-
-// const Home: React.FC = () => {
-//   const [profile, setProfile] = useState<ProfileData | null>(null);
-//   const [darkMode, setDarkMode] = useState<boolean>(
-//     () => localStorage.getItem("theme") === "dark"
-//   );
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const docRef = doc(db, "portfolio", "profile");
-//       const snap = await getDoc(docRef);
-//       if (snap.exists()) setProfile(snap.data() as ProfileData);
-//     };
-//     fetchData();
-//   }, []);
-
-//   useEffect(() => {
-//     document.documentElement.classList.toggle("dark", darkMode);
-//     localStorage.setItem("theme", darkMode ? "dark" : "light");
-//   }, [darkMode]);
-
-//   if (!profile)
-//     return (
-//       <div className="flex items-center justify-center min-h-screen text-gray-500 dark:text-gray-300">
-//         Loading portfolio...
-//       </div>
-//     );
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-300 text-gray-800 dark:text-gray-200">
-//       {/* Theme Toggle */}
-//       <button
-//         onClick={() => setDarkMode(!darkMode)}
-//         title="Toggle theme"
-//         className="fixed top-4 right-4 bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow-md hover:scale-105 transition"
-//       >
-//         {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-//       </button>
-
-//       {/* Profile Header */}
-//       <header className="flex flex-col items-center text-center pt-16 pb-10 px-4">
-//         <img
-//           src={profile.photoUrl}
-//           alt="Profile"
-//           className="w-32 h-32 sm:w-40 sm:h-40 rounded-full shadow-lg object-cover mb-4 border-4 border-indigo-500"
-//         />
-//         <h1 className="text-3xl sm:text-4xl font-bold">{profile.name}</h1>
-//         <p className="text-indigo-600 dark:text-indigo-400 font-medium">
-//           {profile.position}
-//         </p>
-//         <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-2xl">
-//           {profile.startNote}
-//         </p>
-//         <div className="flex gap-4 mt-4">
-//           <a
-//             href={profile.github}
-//             target="_blank"
-//             rel="noreferrer"
-//             className="text-indigo-500 hover:text-indigo-700"
-//           >
-//             GitHub
-//           </a>
-//           <a
-//             href={profile.linkedin}
-//             target="_blank"
-//             rel="noreferrer"
-//             className="text-indigo-500 hover:text-indigo-700"
-//           >
-//             LinkedIn
-//           </a>
-//         </div>
-//       </header>
-
-//       {/* About Section */}
-//       {profile.about && (
-//         <section className="max-w-4xl mx-auto px-6 py-10">
-//           <h2 className="text-2xl font-semibold border-b-2 border-indigo-500 pb-2 mb-4">
-//             About Me
-//           </h2>
-//           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-//             {profile.about}
-//           </p>
-//         </section>
-//       )}
-
-//       {/* Education Section */}
-//       {profile.education && profile.education.length > 0 && (
-//         <section className="max-w-4xl mx-auto px-6 py-10">
-//           <h2 className="text-2xl font-semibold border-b-2 border-indigo-500 pb-2 mb-4">
-//             Education
-//           </h2>
-//           <div className="space-y-4">
-//             {profile.education.map((edu, i) => (
-//               <div
-//                 key={i}
-//                 className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 shadow-sm"
-//               >
-//                 <h3 className="font-semibold">{edu.degree}</h3>
-//                 <p className="text-sm text-gray-500">
-//                   {edu.institution} • {edu.year}
-//                 </p>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-//       )}
-
-//       {/* Experience Section */}
-//       {profile.experience && profile.experience.length > 0 && (
-//         <section className="max-w-4xl mx-auto px-6 py-10">
-//           <h2 className="text-2xl font-semibold border-b-2 border-indigo-500 pb-2 mb-4">
-//             Experience
-//           </h2>
-//           <div className="space-y-4">
-//             {profile.experience.map((exp, i) => (
-//               <div
-//                 key={i}
-//                 className="p-4 rounded-lg bg-gray-100 dark:bg-gray-800 shadow-sm"
-//               >
-//                 <h3 className="font-semibold">{exp.title}</h3>
-//                 <p className="text-sm text-gray-500">
-//                   {exp.company} • {exp.duration}
-//                 </p>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-//       )}
-
-//       {/* Skills Section */}
-//       {profile.skills && profile.skills.length > 0 && (
-//         <section className="max-w-4xl mx-auto px-6 py-10">
-//           <h2 className="text-2xl font-semibold border-b-2 border-indigo-500 pb-2 mb-4">
-//             Skills
-//           </h2>
-//           <div className="flex flex-wrap gap-3">
-//             {profile.skills.map((skill, i) => (
-//               <span
-//                 key={i}
-//                 className="px-4 py-2 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full text-sm font-medium"
-//               >
-//                 {skill}
-//               </span>
-//             ))}
-//           </div>
-//         </section>
-//       )}
-
-//       {/* Contact Section */}
-//       {profile.contact && (
-//         <section className="max-w-4xl mx-auto px-6 py-10 text-center">
-//           <h2 className="text-2xl font-semibold border-b-2 border-indigo-500 pb-2 mb-4">
-//             Contact
-//           </h2>
-//           <p>{profile.contact.email}</p>
-//           <p>{profile.contact.phone}</p>
-//           <p>{profile.contact.location}</p>
-//         </section>
-//       )}
-
-//       {/* Footer */}
-//       <footer className="text-center py-6 text-sm text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-//         © {new Date().getFullYear()} {profile.name}. All Rights Reserved.
-//       </footer>
-//     </div>
-//   );
-// };
-
-// export default Home;
-
-
+import { doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { FaMoon, FaSun, FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { FaMoon, FaSun, FaGithub, FaLinkedin } from "react-icons/fa";
+import { db } from "../firebase/config";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
     localStorage.getItem("theme") === "dark"
   );
+
+  const [profile, setProfile] = useState<any>(null);
+  const [clickCount, setClickCount] = useState(0);
+  const [showLogin, setShowLogin] = useState(false);
+
+  const handleSecretClick = () => {
+    setClickCount((prev) => {
+      const newCount = prev + 1;
+      const count = clickCount + 1;
+      console.log(count);
+      if (newCount >= 3) {
+        setShowLogin(true);
+        setClickCount(0);
+      }
+      return newCount;
+    });
+  };
+
+  // Hide login button after 5 seconds
+  useEffect(() => {
+    if (showLogin) {
+      const timer = setTimeout(() => setShowLogin(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLogin]);
 
   // handle theme toggle
   useEffect(() => {
@@ -206,42 +44,94 @@ const Home: React.FC = () => {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const docRef = doc(db, "portfolio", "profile");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setProfile(docSnap.data());
+      }
+    };
+    fetchProfile();
+  }, []);
+
+
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
       {/* Navbar */}
       <header className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700">
         <h1 className="text-2xl font-bold">Althaf Portfolio</h1>
-        <button
-          type="button"
-          onClick={() => setDarkMode(!darkMode)}
-          className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-          title="Toggle Theme"
-        >
-          {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-700" />}
-        </button>
+        <div className="flex justify-between items-center gap-x-4 ">
+
+          {showLogin ? (
+            <button
+              type="button"
+              onClick={() => (window.location.href = "/login")}
+              className="px-4 py-1 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition"
+              title="Go to Login"
+            >
+              Login
+            </button>
+          ): 
+            <button
+              onClick={handleSecretClick}
+              title="Hidden Area"
+              className="w-6 h-6 rounded-full bg-transparent hover:bg-transparent focus:outline-none"
+            >
+            </button>
+          } 
+
+          <button
+            type="button"
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            title="Toggle Theme"
+          >
+            {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-700" />}
+          </button>
+        </div>
       </header>
 
       {/* Profile Section */}
-      <section className="flex flex-col sm:flex-row items-center justify-center py-16 px-6">
-        <img
-          src="/profile.jpg" // replace with your hosted profile image
-          alt="Profile"
-          className="w-40 h-40 sm:w-56 sm:h-56 rounded-full object-cover shadow-lg border-4 border-indigo-500 mb-6 sm:mb-0 sm:mr-10"
-        />
-        <div className="text-center sm:text-left max-w-xl">
-          <h2 className="text-3xl font-bold mb-3">Muhammadh Althaf</h2>
-          <p className="text-indigo-500 font-medium mb-2">Full Stack Developer</p>
-          <p className="opacity-80 mb-4">
-            Passionate about building modern, scalable web applications using
-            React, Next.js, NestJS, and Firebase. Dedicated to crafting clean
-            and user-friendly interfaces.
-          </p>
-          <div className="flex justify-center sm:justify-start space-x-4">
-            <a href="mailto:althaf@example.com"><FaEnvelope className="text-2xl hover:text-indigo-500" /></a>
-            <a href="https://github.com/althafmhdh" target="_blank"><FaGithub className="text-2xl hover:text-indigo-500" /></a>
-            <a href="https://linkedin.com/in/althaf" target="_blank"><FaLinkedin className="text-2xl hover:text-indigo-500" /></a>
-          </div>
-        </div>
+      <section className="flex flex-col sm:flex-row items-center justify-center py-16 px-6 sm:gap-x-10 lg:gap-x-10">
+        {profile && (
+          <>
+            <img
+              src={profile.photoUrl ||"/profile.jpg"}
+              alt="Profile"
+              //className="w-40 h-40 sm:w-84 sm:h-84 rounded-full object-cover shadow-lg border-4 border-indigo-500 mb-6 sm:mb-0 sm:mr-10"
+              className="w-44 h-44 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full object-cover shadow-2xl border-4 border-indigo-500 mb-6 sm:mb-0 transition-transform duration-300 hover:scale-105"
+            />
+            <div className="text-center sm:text-left max-w-xl">
+              <p className="text-2xl font-medium mb-2">{profile.startNote}</p>
+              <h1 className="text-4xl font-bold mb-3">{profile.name}</h1>
+              <p className="text-2xl text-indigo-500 font-medium mb-2">{profile.position}</p>
+              <p className="opacity-80 mb-4">{profile.note}</p>
+              <div className="flex justify-center sm:justify-start space-x-4">
+                {profile.github && (
+                  <a
+                    href={profile.github}
+                    target="_blank"
+                    title="GitHub"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub className="text-4xl hover:text-indigo-500" />
+                  </a>
+                )}
+                {profile.linkedin && (
+                  <a
+                    href={profile.linkedin}
+                    target="_blank"
+                    title="Linkedin"
+                    rel="noopener noreferrer"
+                  >
+                    <FaLinkedin className="text-4xl hover:text-indigo-500" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </section>
 
       {/* About Section */}
