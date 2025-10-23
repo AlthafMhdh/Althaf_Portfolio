@@ -4,6 +4,7 @@ import { FaMoon, FaSun, FaGithub, FaLinkedin } from "react-icons/fa";
 import { db } from "../firebase/config";
 import AboutSection from "./components/About";
 import ExperienceSection from "./components/Experience";
+import EducationSection from "./components/Education";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -173,7 +174,7 @@ const Home: React.FC = () => {
       <AboutSection/>
 
       {/* Qualification */}
-      <section id="education" className="py-16 px-6">
+      {/* <section id="education" className="py-16 px-6">
         <h3 className="text-3xl font-bold mb-10 text-center">Education</h3>
         <div className="max-w-3xl mx-auto space-y-6">
           <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow hover:shadow-lg transition">
@@ -185,7 +186,8 @@ const Home: React.FC = () => {
             <p className="text-indigo-500">IJSE — 2022</p>
           </div>
         </div>
-      </section>
+      </section> */}
+      <EducationSection/>
 
       {/* Experience */}
       {/* <section id="experience" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">

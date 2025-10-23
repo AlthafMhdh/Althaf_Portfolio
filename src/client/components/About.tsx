@@ -34,7 +34,7 @@ const AboutSection: React.FC = () => {
             }`}
         >
             {/* Image */}
-            <div className="w-full md:w-1/2 flex justify-center">
+            <div className="w-full md:w-1/2 flex justify-center md:justify-left">
             <img
                 src={aboutData.photoUrl || "/profile.jpg"}
                 alt="About me"
