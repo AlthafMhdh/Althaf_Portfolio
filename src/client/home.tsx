@@ -5,6 +5,8 @@ import { db } from "../firebase/config";
 import AboutSection from "./components/About";
 import ExperienceSection from "./components/Experience";
 import EducationSection from "./components/Education";
+import ClientContactView from "./components/Contact";
+import ClientSkillsView from "./components/Skills";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -207,7 +209,7 @@ const Home: React.FC = () => {
       <ExperienceSection/>
 
       {/* Skills */}
-      <section id="skills" className="py-16 px-6">
+      {/* <section id="skills" className="py-16 px-6">
         <h3 className="text-3xl font-bold mb-10 text-center">Skills</h3>
         <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
           {["React", "Next.js", "NestJS", "Firebase", "MongoDB", "Node.js", "MySQL", "TailwindCSS"].map(skill => (
@@ -219,10 +221,11 @@ const Home: React.FC = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
+      <ClientSkillsView/>
 
       {/* Contact */}
-      <section id="contact" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">
+      {/* <section id="contact" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">
         <h3 className="text-3xl font-bold mb-10 text-center">Contact</h3>
         <form className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-8 rounded-xl shadow space-y-4">
           <input type="text" placeholder="Your Name" className="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" />
@@ -232,7 +235,8 @@ const Home: React.FC = () => {
             Send Message
           </button>
         </form>
-      </section>
+      </section> */}
+      <ClientContactView/>
 
       {/* Footer */}
       <footer className="py-6 text-center border-t border-gray-300 dark:border-gray-700">
