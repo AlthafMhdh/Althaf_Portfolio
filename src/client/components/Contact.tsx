@@ -9,7 +9,6 @@ import {
   FaTiktok,
   FaWhatsapp,
   FaLinkedin,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 const ClientContactView: React.FC = () => {
