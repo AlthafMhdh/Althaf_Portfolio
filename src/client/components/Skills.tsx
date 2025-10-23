@@ -52,7 +52,7 @@ const ClientSkillsView: React.FC = () => {
       className="py-16 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
     >
       <h3 className="text-3xl font-bold mb-10 text-center text-gray-800 dark:text-white">
-        Skills
+        My Skills
       </h3>
 
       <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">

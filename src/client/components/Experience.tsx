@@ -52,12 +52,13 @@ const ExperienceSection: React.FC = () => {
                         <img
                         src={exp.logoUrl}
                         alt={exp.companyName}
-                        className="w-15 h-15 object-contain rounded-full border border-gray-300 dark:border-gray-700"
+                        // className="w-20 h-20 object-contain rounded-full border border-gray-300 dark:border-gray-700"
+                        className="w-20 h-20 object-contain rounded-md"
                         />
                     </div>
                     )}
                     <div>
-                        <h4 className="text-xl font-semibold text-left md:text-left">
+                        <h4 className="text-md font-semibold text-left md:text-left">
                             {exp.position} - {exp.companyName}
                         </h4>
                         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 text-left md:text-left">

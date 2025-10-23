@@ -7,6 +7,7 @@ import ExperienceSection from "./components/Experience";
 import EducationSection from "./components/Education";
 import ClientContactView from "./components/Contact";
 import ClientSkillsView from "./components/Skills";
+import ProjectsSection from "./components/Project";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -64,7 +65,8 @@ const Home: React.FC = () => {
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700">
+      {/* <header className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700"> */}
+      <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 shadow-sm backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
         <h1 className="text-2xl font-bold">Althaf Portfolio</h1>
         <div className="flex justify-between items-center gap-x-4 ">
 
@@ -109,7 +111,7 @@ const Home: React.FC = () => {
       </header>
 
       {/* Profile Section */}
-      <section className="flex flex-col sm:flex-row items-center justify-center py-16 px-6 sm:gap-x-10 lg:gap-x-10">
+      <section className="flex flex-col mt-16 sm:mt-16  sm:flex-row items-center justify-center py-16 px-6 sm:gap-x-10 lg:gap-x-10">
         {profile && (
           <>
             <img
@@ -163,79 +165,25 @@ const Home: React.FC = () => {
       </section>
 
       {/* About Section */}
-      {/* <section id="about" className="py-16 px-6 bg-gray-100 dark:bg-gray-800"> */}
-      {/* <section id="about" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">
-        <h3 className="text-3xl font-bold mb-6 text-center">About Me</h3>
-        <p className="max-w-3xl mx-auto text-center opacity-80 leading-relaxed">
-          I’m a self-driven software developer with experience in modern
-          full-stack technologies. I love solving challenging problems,
-          optimizing performance, and collaborating with teams to build
-          innovative solutions.
-        </p>
-      </section> */}
       <AboutSection/>
 
       {/* Qualification */}
-      {/* <section id="education" className="py-16 px-6">
-        <h3 className="text-3xl font-bold mb-10 text-center">Education</h3>
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow hover:shadow-lg transition">
-            <h4 className="text-xl font-semibold">BSc in Computer Science</h4>
-            <p className="text-indigo-500">University of Colombo (2019–2023)</p>
-          </div>
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-6 shadow hover:shadow-lg transition">
-            <h4 className="text-xl font-semibold">Diploma in Software Engineering</h4>
-            <p className="text-indigo-500">IJSE — 2022</p>
-          </div>
-        </div>
-      </section> */}
       <EducationSection/>
 
       {/* Experience */}
-      {/* <section id="experience" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">
-        <h3 className="text-3xl font-bold mb-10 text-center">Experience</h3>
-        <div className="max-w-3xl mx-auto space-y-6">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow hover:shadow-lg transition">
-            <h4 className="text-xl font-semibold">Full Stack Developer - Freelance</h4>
-            <p className="text-indigo-500 mb-2">2023 – Present</p>
-            <p className="opacity-80">
-              Worked on multiple web applications using React, Next.js, NestJS,
-              Firebase, and MongoDB. Focused on responsive UI, backend APIs, and
-              cloud integration.
-            </p>
-          </div>
-        </div>
-      </section> */}
       <ExperienceSection/>
 
       {/* Skills */}
-      {/* <section id="skills" className="py-16 px-6">
-        <h3 className="text-3xl font-bold mb-10 text-center">Skills</h3>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
-          {["React", "Next.js", "NestJS", "Firebase", "MongoDB", "Node.js", "MySQL", "TailwindCSS"].map(skill => (
-            <div
-              key={skill}
-              className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl shadow hover:shadow-lg hover:scale-105 transition"
-            >
-              {skill}
-            </div>
-          ))}
-        </div>
-      </section> */}
       <ClientSkillsView/>
 
+      {/* Projects */}
+      <ProjectsSection/>
+
+      {/* Certifications */}
+
+      {/* Social */}
+
       {/* Contact */}
-      {/* <section id="contact" className="py-16 px-6 bg-gray-100 dark:bg-gray-800">
-        <h3 className="text-3xl font-bold mb-10 text-center">Contact</h3>
-        <form className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-8 rounded-xl shadow space-y-4">
-          <input type="text" placeholder="Your Name" className="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" />
-          <input type="email" placeholder="Your Email" className="w-full px-4 py-2 rounded-lg border dark:bg-gray-800" />
-          <textarea placeholder="Your Message" className="w-full px-4 py-2 rounded-lg border dark:bg-gray-800 h-32" />
-          <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
-            Send Message
-          </button>
-        </form>
-      </section> */}
       <ClientContactView/>
 
       {/* Footer */}

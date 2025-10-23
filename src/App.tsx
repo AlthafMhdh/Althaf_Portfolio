@@ -5,6 +5,7 @@ import Home from './client/home'
 //import { useEffect, useState } from 'react';
 import Login from './admin/login';
 import ProtectedRoute from './routes/ProtectedRoute';
+import AllProjects from './client/AllProjects';
 //import { auth } from './firebase/config';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>} />
+        <Route path='/projects' element={<AllProjects/>} />
         <Route path="/admin" 
           element={
             <ProtectedRoute>
