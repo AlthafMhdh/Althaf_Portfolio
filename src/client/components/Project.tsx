@@ -99,7 +99,7 @@ const ProjectsSection: React.FC = () => {
                             rel="noopener noreferrer"
                             title="GitHub"
                             //className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
-                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
                             >
                             GitHub
                             </a>
@@ -111,7 +111,7 @@ const ProjectsSection: React.FC = () => {
                             rel="noopener noreferrer"
                             title="Live Demo"
                             //className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
-                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
                             >
                             Live Demo
                             </a>
@@ -119,51 +119,6 @@ const ProjectsSection: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                // <div
-                //         key={project.id}
-                //         className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
-                //     >
-                //         <img
-                //         src={project.photoUrl}
-                //         alt={project.projectName}
-                //         className="w-full h-48 object-cover"
-                //         />
-                //         <div className="p-4">
-                //             <h3 className="text-xl font-semibold mb-2">{project.projectName}</h3>
-                //             <p className="text-gray-600 dark:text-gray-300 mb-3">
-                //                 {project.about}
-                //             </p>
-                //             <p className="text-gray-600 dark:text-gray-300 mb-3">
-                //                 {project.technologies}
-                //             </p>
-
-                //             <div className="flex justify-start sm:justify-start space-x-4">
-                //                 {project.github && (
-                //                 <a
-                //                     href={project.github}
-                //                     target="_blank"
-                //                     title="GitHub"
-                //                     rel="noopener noreferrer"
-                //                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
-                //                 >
-                //                     View Project
-                //                 </a>
-                //                 )}
-                //                 {project.website && (
-                //                 <a
-                //                     href={project.website}
-                //                     target="_blank"
-                //                     title="Website"
-                //                     rel="noopener noreferrer"
-                //                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
-                //                 >
-                //                     Live Demo
-                //                 </a>
-                //                 )}
-                //             </div>
-
-                //         </div>
-                //     </div>
                 ))}
 
                 {projects.length >= 3 && (

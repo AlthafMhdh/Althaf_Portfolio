@@ -225,7 +225,7 @@ const AllProjects: React.FC = () => {
                                     target="_blank"
                                     title="GitHub"
                                     rel="noopener noreferrer"
-                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
                                 >
                                     View Github
                                 </a>
@@ -236,7 +236,7 @@ const AllProjects: React.FC = () => {
                                     target="_blank"
                                     title="Website"
                                     rel="noopener noreferrer"
-                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
                                 >
                                     Live Demo
                                 </a>
