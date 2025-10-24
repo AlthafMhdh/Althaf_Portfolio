@@ -30,6 +30,8 @@ const EducationSection: React.FC = () => {
     fetchEducations();
   }, []);
 
+  if (educations.length === 0) return null;
+
   // Group by level
   const grouped = educations.reduce<Record<string, Education[]>>((acc, edu) => {
     if (!acc[edu.level]) acc[edu.level] = [];

@@ -45,7 +45,7 @@ const ProjectsSection: React.FC = () => {
   if (loading) {
     return (
       <section className="py-16 px-6 text-center">
-        <p className="text-gray-500 dark:text-gray-400">Loading projects...</p>
+        <p className="text-gray-500 dark:text-gray-400"></p>
       </section>
     );
   }
@@ -108,12 +108,14 @@ const ProjectsSection: React.FC = () => {
                 </div>
                 ))}
 
-                <div
-                    onClick={() => (window.location.href = "/projects")}
-                    className="min-w-[280px] sm:min-w-[320px] flex flex-col items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl text-white cursor-pointer shadow hover:shadow-xl hover:-translate-y-1 transition duration-300"
-                >
-                    <p className="text-xl font-bold">View All Projects →</p>
-                </div>
+                {projects.length > 3 && (
+                    <div
+                        onClick={() => (window.location.href = "/projects")}
+                        className="min-w-[280px] sm:min-w-[320px] flex flex-col items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl text-white cursor-pointer shadow hover:shadow-xl hover:-translate-y-1 transition duration-300"
+                    >
+                        <p className="text-xl font-bold">View All Projects →</p>
+                    </div>
+                )}
             </div>
         </div>
     </section>

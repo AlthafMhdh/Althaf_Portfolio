@@ -33,18 +33,18 @@ const ClientSkillsView: React.FC = () => {
   if (loading) {
     return (
       <section id="skills" className="py-16 px-6 text-center">
-        <p className="text-gray-500 dark:text-gray-400">Loading skills...</p>
+        <p className="text-gray-500 dark:text-gray-400"></p>
       </section>
     );
   }
 
-  if (skills.length === 0) {
-    return (
-      <section id="skills" className="py-16 px-6 text-center">
-        <p className="text-gray-500 dark:text-gray-400">No skills available.</p>
-      </section>
-    );
-  }
+  // if (skills.length === 0) {
+  //   return (
+  //     <section id="skills" className="py-16 px-6 text-center">
+  //       <p className="text-gray-500 dark:text-gray-400">No skills available.</p>
+  //     </section>
+  //   );
+  // }
 
   return (
     <section
