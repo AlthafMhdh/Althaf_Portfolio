@@ -12,6 +12,8 @@ import Certification from "./components/certifications";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
+import Footer from "./components/footer";
+import SocialService from "./components/socialworks";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -74,6 +76,8 @@ const Dashboard = () => {
           {activePage === "Certifications" && <Certification/>}
           {activePage === "Education" && <Education/>}
           {activePage === "Contact" && <Contact/>}
+          {activePage === "Footer" && <Footer/>}
+          {activePage === "Social & Club" && <SocialService/>}
         </main>
       </div>
     </div>

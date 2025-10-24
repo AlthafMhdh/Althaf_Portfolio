@@ -26,12 +26,17 @@ const ProjectsSection: React.FC = () => {
           const data = snap.data();
           const allProjects = data.items || [];
           // Sort by date (newest first)
-          const sorted = allProjects.sort(
-            (a: Project, b: Project) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-          // Take the latest 3
-          setProjects(sorted.slice(0, 3));
+          // const sorted = allProjects.sort(
+          //   (a: Project, b: Project) =>
+          //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          // );
+          // // Take the latest 3
+          // setProjects(sorted.slice(0, 3));
+
+          // Reverse order by index (last added first)
+          const reversed = [...allProjects].reverse();
+
+          setProjects(reversed.slice(0,4));
         }
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -56,8 +61,14 @@ const ProjectsSection: React.FC = () => {
             My Latest Projects
         </h3>
 
-        <div className="overflow-x-auto scroll-smooth [scrollbar-width:none] [ms-overflow-style:none]">
-            <div className="max-w-6xl mx-auto flex gap-6 px-2 [scrollbar-width:none]">
+        {/* <div className="overflow-x-auto scroll-smooth [scrollbar-width:none] [ms-overflow-style:none]">
+            <div className="max-w-6xl mx-auto flex gap-6 px-2 [scrollbar-width:none]"> */}
+
+            <div className="flex justify-center">
+  <div className="w-full max-w-6xl overflow-x-auto scroll-smooth px-2 [scrollbar-width:none] [ms-overflow-style:none]">
+    <div className="flex gap-6">
+
+            
 
                 {projects.map((project) => (
                 <div
@@ -87,7 +98,8 @@ const ProjectsSection: React.FC = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             title="GitHub"
-                            className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
+                            //className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
+                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
                             >
                             GitHub
                             </a>
@@ -98,7 +110,8 @@ const ProjectsSection: React.FC = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             title="Live Demo"
-                            className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
+                            //className="text-indigo-500 hover:text-indigo-400 text-sm font-semibold"
+                            className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
                             >
                             Live Demo
                             </a>
@@ -106,9 +119,54 @@ const ProjectsSection: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                // <div
+                //         key={project.id}
+                //         className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+                //     >
+                //         <img
+                //         src={project.photoUrl}
+                //         alt={project.projectName}
+                //         className="w-full h-48 object-cover"
+                //         />
+                //         <div className="p-4">
+                //             <h3 className="text-xl font-semibold mb-2">{project.projectName}</h3>
+                //             <p className="text-gray-600 dark:text-gray-300 mb-3">
+                //                 {project.about}
+                //             </p>
+                //             <p className="text-gray-600 dark:text-gray-300 mb-3">
+                //                 {project.technologies}
+                //             </p>
+
+                //             <div className="flex justify-start sm:justify-start space-x-4">
+                //                 {project.github && (
+                //                 <a
+                //                     href={project.github}
+                //                     target="_blank"
+                //                     title="GitHub"
+                //                     rel="noopener noreferrer"
+                //                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                //                 >
+                //                     View Project
+                //                 </a>
+                //                 )}
+                //                 {project.website && (
+                //                 <a
+                //                     href={project.website}
+                //                     target="_blank"
+                //                     title="Website"
+                //                     rel="noopener noreferrer"
+                //                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
+                //                 >
+                //                     Live Demo
+                //                 </a>
+                //                 )}
+                //             </div>
+
+                //         </div>
+                //     </div>
                 ))}
 
-                {projects.length > 3 && (
+                {projects.length >= 3 && (
                     <div
                         onClick={() => (window.location.href = "/projects")}
                         className="min-w-[280px] sm:min-w-[320px] flex flex-col items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl text-white cursor-pointer shadow hover:shadow-xl hover:-translate-y-1 transition duration-300"
@@ -117,6 +175,7 @@ const ProjectsSection: React.FC = () => {
                     </div>
                 )}
             </div>
+        </div>
         </div>
     </section>
   );

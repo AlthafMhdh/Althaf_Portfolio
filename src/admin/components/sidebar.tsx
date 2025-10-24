@@ -18,7 +18,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick, ac
     "Projects",
     "Certifications",
     "Education",
+    "Social & Club",
     "Contact",
+    "Footer",
     "Logout",
   ];
 

@@ -20,7 +20,7 @@ interface Experience {
   updatedAt?: any;
 }
 
-const Experiences: React.FC = () => {
+const SocialService: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -221,7 +221,7 @@ const Experiences: React.FC = () => {
     //bg-white rounded-xl shadow-lg
     <div className="w-full max-w-7xl mx-auto p-2 sm:p-2">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-gray-700">My Experience</h2>
+        <h2 className="text-2xl font-semibold text-gray-700">My Social Service</h2>
         <button
           onClick={() => {
             resetForm();
@@ -229,13 +229,13 @@ const Experiences: React.FC = () => {
           }}
           className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
         >
-          + Add Experience
+          + Add
         </button>
       </div>
 
       {experiences.length === 0 && (
         <div className="text-center text-gray-500 mt-4 mb-6">
-          <p>No experience records yet. Add your first experience.</p>
+          <p>No social service records yet. Add your first one.</p>
         </div>
       )}
 
@@ -393,7 +393,7 @@ const Experiences: React.FC = () => {
                   type="submit"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
                 >
-                  {editingIndex !== null ? "Update Experience" : "Save Experience"}
+                  {editingIndex !== null ? "Update Education" : "Save Education"}
                 </button>
               </div>
             </form>
@@ -417,4 +417,4 @@ const Experiences: React.FC = () => {
   );
 };
 
-export default Experiences;
+export default SocialService;

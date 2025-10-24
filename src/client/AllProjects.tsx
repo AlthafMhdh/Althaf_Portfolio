@@ -2,6 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { db } from "../firebase/config";
+import { Link } from "react-router-dom";
 
 interface Project {
   id: string;
@@ -26,6 +27,7 @@ const AllProjects: React.FC = () => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const [footer, setFooter] = useState<any>(null);
 
     const handleSecretClick = () => {
         setClickCount((prev) => {
@@ -69,6 +71,21 @@ const AllProjects: React.FC = () => {
         };
         fetchProfile();
     }, []);
+
+    useEffect(() => {
+        const fetchFooter = async () => {
+          try {
+            const footerRef = doc(db, "portfolio", "footer");
+            const snap = await getDoc(footerRef);
+            if (snap.exists()) {
+              setFooter(snap.data());
+            }
+          } catch (error) {
+            console.error("Error fetching footer:", error);
+          }
+        };
+        fetchFooter();
+      }, []);
   
     useEffect(() => {
       const fetchProjects = async () => {
@@ -78,12 +95,16 @@ const AllProjects: React.FC = () => {
             const data = snap.data();
             const allProjects = data.items || [];
             // Sort by date (newest first)
-            const sorted = allProjects.sort(
-              (a: Project, b: Project) =>
-                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            );
-            // Take the latest 3
-            setProjects(sorted.slice(0, 3));
+            // const sorted = allProjects.sort(
+            //   (a: Project, b: Project) =>
+            //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            // );
+            // setProjects(sorted);
+
+            // Reverse order by index (last added first)
+            const reversed = [...allProjects].reverse();
+
+            setProjects(reversed);
           }
         } catch (error) {
           console.error("Error fetching projects:", error);
@@ -111,7 +132,14 @@ const AllProjects: React.FC = () => {
         <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
             {/* Navbar */}
             <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 shadow-sm backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
-                <h1 className="text-2xl font-bold">Althaf Portfolio</h1>
+                <h1 className="text-2xl font-bold">
+                    <Link
+                        to="/"
+                        className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+                    >
+                        Althaf Portfolio
+                    </Link>
+                </h1>
                 <div className="flex justify-between items-center gap-x-4 ">
 
                     {showLogin ? (
@@ -191,22 +219,22 @@ const AllProjects: React.FC = () => {
                             </p>
 
                             <div className="flex justify-start sm:justify-start space-x-4">
-                                {profile.github && (
+                                {project.github && (
                                 <a
-                                    href={profile.github}
+                                    href={project.github}
                                     target="_blank"
                                     title="GitHub"
                                     rel="noopener noreferrer"
                                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
                                 >
-                                    View Project
+                                    View Github
                                 </a>
                                 )}
-                                {profile.website && (
+                                {project.website && (
                                 <a
-                                    href={profile.website}
+                                    href={project.website}
                                     target="_blank"
-                                    title="Linkedin"
+                                    title="Website"
                                     rel="noopener noreferrer"
                                     className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition"
                                 >
@@ -229,7 +257,22 @@ const AllProjects: React.FC = () => {
 
             {/* Footer */}
             <footer className="py-6 text-center border-t border-gray-300 dark:border-gray-700">
-                <p>© {new Date().getFullYear()} Muhammadh Althaf. All rights reserved.</p>
+                {footer ? (
+                <>
+                    <p className="text-gray-700 dark:text-gray-300">
+                    {footer.copyright || `© ${new Date().getFullYear()} Your Name. All rights reserved.`}
+                    </p>
+                    {footer.developedby && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        Developed by {footer.developedby}
+                    </p>
+                    )}
+                </>
+                ) : (
+                <p className="text-gray-500 dark:text-gray-400">
+                    © {new Date().getFullYear()} Muhammadh Althaf. All rights reserved.
+                </p>
+                )}
             </footer>
         </div>
     );

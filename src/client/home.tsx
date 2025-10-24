@@ -8,6 +8,7 @@ import EducationSection from "./components/Education";
 import ClientContactView from "./components/Contact";
 import ClientSkillsView from "./components/Skills";
 import ProjectsSection from "./components/Project";
+import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
   const [profile, setProfile] = useState<any>(null);
   const [clickCount, setClickCount] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
+  const [footer, setFooter] = useState<any>(null);
 
   const handleSecretClick = () => {
     setClickCount((prev) => {
@@ -61,13 +63,36 @@ const Home: React.FC = () => {
     fetchProfile();
   }, []);
 
+  useEffect(() => {
+    const fetchFooter = async () => {
+      try {
+        const footerRef = doc(db, "portfolio", "footer");
+        const snap = await getDoc(footerRef);
+        if (snap.exists()) {
+          setFooter(snap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching footer:", error);
+      }
+    };
+    fetchFooter();
+  }, []);
+
  
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
       {/* Navbar */}
       {/* <header className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700"> */}
       <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 shadow-sm backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
-        <h1 className="text-2xl font-bold">Althaf Portfolio</h1>
+        {/* <h1 className="text-2xl font-bold">Althaf Portfolio</h1> */}
+        <h1 className="text-2xl font-bold">
+          <Link
+            to="/"
+            className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+          >
+            Althaf Portfolio
+          </Link>
+        </h1>
         <div className="flex justify-between items-center gap-x-4 ">
 
           {showLogin ? (
@@ -188,7 +213,23 @@ const Home: React.FC = () => {
 
       {/* Footer */}
       <footer className="py-6 text-center border-t border-gray-300 dark:border-gray-700">
-        <p>© {new Date().getFullYear()} Muhammadh Althaf. All rights reserved.</p>
+        {/* <p>© {new Date().getFullYear()} Muhammadh Althaf. All rights reserved.</p> */}
+        {footer ? (
+          <>
+            <p className="text-gray-700 dark:text-gray-300">
+              {footer.copyright || `© ${new Date().getFullYear()} Your Name. All rights reserved.`}
+            </p>
+            {footer.developedby && (
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Developed by {footer.developedby}
+              </p>
+            )}
+          </>
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">
+            © {new Date().getFullYear()} Muhammadh Althaf. All rights reserved.
+          </p>
+        )}
       </footer>
     </div>
   );
