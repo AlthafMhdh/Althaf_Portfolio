@@ -55,6 +55,8 @@ const ProjectsSection: React.FC = () => {
     );
   }
 
+  if (projects.length === 0) return null;
+
   return (
     <section id="projects" className="py-16 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
         <h3 className="text-3xl font-bold mb-10 text-center text-gray-800 dark:text-white">
