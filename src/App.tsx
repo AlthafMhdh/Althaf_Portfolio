@@ -6,6 +6,7 @@ import Home from './client/home'
 import Login from './admin/login';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AllProjects from './client/AllProjects';
+import AllCertifications from './client/AllCertifications';
 //import { auth } from './firebase/config';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/projects' element={<AllProjects/>} />
+        <Route path='/certificates' element={<AllCertifications/>} />
         <Route path="/admin" 
           element={
             <ProtectedRoute>

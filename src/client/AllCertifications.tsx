@@ -4,19 +4,16 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { db } from "../firebase/config";
 import { Link } from "react-router-dom";
 
-interface Project {
+interface Certificate {
   id: string;
-  projectName: string;
-  about: string;
-  technologies: string;
-  github?: string;
-  website?: string;
+  courseName: string;
+  duration: string;
   photoUrl?: string;
   createdAt?: any;
   updatedAt?: any;
 }
 
-const AllProjects: React.FC = () => {
+const AllCertifications: React.FC = () => {
     const [darkMode, setDarkMode] = useState<boolean>(
         localStorage.getItem("theme") === "dark"
     );
@@ -24,7 +21,7 @@ const AllProjects: React.FC = () => {
     const [profile, setProfile] = useState<any>(null);
     const [clickCount, setClickCount] = useState(0);
     const [showLogin, setShowLogin] = useState(false);
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [certificates, setCertificates] = useState<Certificate[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [footer, setFooter] = useState<any>(null);
@@ -88,23 +85,15 @@ const AllProjects: React.FC = () => {
       }, []);
   
     useEffect(() => {
-      const fetchProjects = async () => {
+      const fetchCertificates = async () => {
         try {
-          const snap = await getDoc(doc(db, "portfolio", "projects"));
+          const snap = await getDoc(doc(db, "portfolio", "certificates"));
           if (snap.exists()) {
             const data = snap.data();
             const allProjects = data.items || [];
-            // Sort by date (newest first)
-            // const sorted = allProjects.sort(
-            //   (a: Project, b: Project) =>
-            //     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            // );
-            // setProjects(sorted);
-
-            // Reverse order by index (last added first)
             const reversed = [...allProjects].reverse();
 
-            setProjects(reversed);
+            setCertificates(reversed);
           }
         } catch (error) {
           console.error("Error fetching projects:", error);
@@ -112,11 +101,11 @@ const AllProjects: React.FC = () => {
           setLoading(false);
         }
       };
-      fetchProjects();
+      fetchCertificates();
     }, []);
 
-    const filteredProjects = projects.filter((p) =>
-        p.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredCertificates = certificates.filter((c) =>
+        c.courseName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {
@@ -181,16 +170,16 @@ const AllProjects: React.FC = () => {
                 </div>
             </header>
 
-            {/* Project Section */}
+            {/* Certificate Section */}
             <section className="py-16 px-6">
                 <div className="px-6 md:px-12 py-10">
-                    <h1 className="text-3xl font-bold mb-6 text-left">My All Projects</h1>
+                    <h1 className="text-3xl font-bold mb-6 text-left">My All Certificates</h1>
 
                     {/* Search Bar */}
                     <div className="max-w-4xl mb-2">
                         <input
                         type="text"
-                        placeholder="Search projects..."
+                        placeholder="Search certificate..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black"
@@ -199,57 +188,31 @@ const AllProjects: React.FC = () => {
                 </div>
 
                 <div className="max-w-7xl sm:mx-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredProjects.map((project) => (
+                {filteredCertificates.map((certificate) => (
                     <div
-                        key={project.id}
+                        key={certificate.id}
                         className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
                     >
                         <img
-                        src={project.photoUrl}
-                        alt={project.projectName}
+                        src={certificate.photoUrl}
+                        alt={certificate.courseName}
                         className="w-full h-48 object-cover"
                         />
                         <div className="p-4">
-                            <h3 className="text-xl font-semibold mb-2">{project.projectName}</h3>
+                            <h3 className="text-xl font-semibold mb-2">{certificate.courseName}</h3>
                             <p className="text-gray-600 dark:text-gray-300 mb-3">
-                                {project.about}
+                                {certificate.duration}
                             </p>
                             <p className="text-gray-600 dark:text-gray-300 mb-3">
-                                {project.technologies}
+                                {certificate.duration}
                             </p>
-
-                            <div className="flex justify-start sm:justify-start space-x-4">
-                                {project.github && (
-                                <a
-                                    href={project.github}
-                                    target="_blank"
-                                    title="GitHub"
-                                    rel="noopener noreferrer"
-                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
-                                >
-                                    View Github
-                                </a>
-                                )}
-                                {project.website && (
-                                <a
-                                    href={project.website}
-                                    target="_blank"
-                                    title="Website"
-                                    rel="noopener noreferrer"
-                                    className="inline-block mt-2 px-4 py-2 border border-black rounded-full text-sm font-semibold hover:bg-black hover:text-white transition dark:hover:bg-indigo-500"
-                                >
-                                    Live Demo
-                                </a>
-                                )}
-                            </div>
-
                         </div>
                     </div>
                     ))}
 
-                    {filteredProjects.length === 0 && (
+                    {filteredCertificates.length === 0 && (
                     <p className="text-center text-gray-500 col-span-full">
-                        No projects found.
+                        No certificates found.
                     </p>
                     )}
                 </div>
@@ -278,4 +241,4 @@ const AllProjects: React.FC = () => {
     );
 };
 
-export default AllProjects;
+export default AllCertifications;

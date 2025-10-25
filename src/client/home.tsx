@@ -9,6 +9,7 @@ import ClientContactView from "./components/Contact";
 import ClientSkillsView from "./components/Skills";
 import ProjectsSection from "./components/Project";
 import { Link } from "react-router-dom";
+import CertificationsSection from "./components/Certifications";
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -205,6 +206,7 @@ const Home: React.FC = () => {
       <ProjectsSection/>
 
       {/* Certifications */}
+      <CertificationsSection/>
 
       {/* Social */}
 
