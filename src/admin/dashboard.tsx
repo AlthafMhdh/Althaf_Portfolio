@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
 import Footer from "./components/footer";
 import SocialService from "./components/socialworks";
+import Achievements from "./components/AwardsandAchievement";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -78,6 +79,7 @@ const Dashboard = () => {
           {activePage === "Contact" && <Contact/>}
           {activePage === "Footer" && <Footer/>}
           {activePage === "Social & Club" && <SocialService/>}
+          {activePage === "Awards & Achievements" && <Achievements/>}
         </main>
       </div>
     </div>

@@ -28,7 +28,7 @@ const ClientContactView: React.FC = () => {
   return (
     <section
       id="contact"
-      className="py-16 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+      className="py-16 px-6"
     >
       <div className="text-center mb-12">
         <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
