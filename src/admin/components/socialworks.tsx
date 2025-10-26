@@ -2,19 +2,17 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import ExperienceCard from "./ui/experienceCard";
 import Toast from "./toast";
+import SocialCard from "./ui/socialCard";
 
-interface Experience {
+interface SocialWork {
   id: string;
-  companyName: string;
+  soceityName: string;
   position: string;
-  projectInvolvement: string;
   logoUrl: string;
-  address: string;
   startDate: string;
   endDate: string;
-  duration: string;
+  weblink?: string;
   present: boolean;
   createdAt?: any;
   updatedAt?: any;
@@ -24,31 +22,29 @@ const SocialService: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [experiences, setExperiences] = useState<Experience[]>([]);
+  const [socialworks, setSocialWorks] = useState<SocialWork[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    companyName: "",
+    soceityName: "",
     position: "",
-    projectInvolvement: "",
-    address: "",
     startDate: "",
     endDate: "",
-    duration: "",
+    weblink: "",
     present: false,
   });
 
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   
-  const experianceRef = doc(db, "portfolio", "experiances");
+  const socialRef = doc(db, "portfolio", "socialworks");
   useEffect(()=>{
-    const fetchExperiance = async ()=>{
-      const snap = await getDoc(experianceRef);
+    const fetchSocialWork = async ()=>{
+      const snap = await getDoc(socialRef);
       if (snap.exists()) {
         const data = snap.data();
-        setExperiences(data.items || []);
+        setSocialWorks(data.items || []);
       }
     };
-    fetchExperiance();
+    fetchSocialWork();
   },[]);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,13 +67,10 @@ const SocialService: React.FC = () => {
 
   const validate = () => {
     const errors: string[] = [];
-    if (!formData.companyName) errors.push("Company name is required");
-    if (!formData.address) errors.push("Company address is required");
+    if (!formData.soceityName) errors.push("Soceity or club name is required");
     if (!formData.position) errors.push("YOur Job role/ position required");
-    if (!formData.projectInvolvement) errors.push("Project Involvement required");
     if (!formData.startDate) errors.push("Start Date is required");
     if (!formData.present && !formData.endDate) errors.push("End Date is required");
-    if (!formData.duration) errors.push("duration is required");
 
     if (!preview && !editingIndex) errors.push("Logo is required");
 
@@ -102,46 +95,42 @@ const SocialService: React.FC = () => {
           logoUrl = await getDownloadURL(logoRef);
         }
   
-        const newExperience: Experience = {
-          id: editingIndex !== null ? experiences[editingIndex].id : Date.now().toString(),
-          companyName: formData.companyName!,
+        const newSocialWork: SocialWork = {
+          id: editingIndex !== null ? socialworks[editingIndex].id : Date.now().toString(),
+          soceityName: formData.soceityName!,
           position: formData.position,
-          projectInvolvement: formData.projectInvolvement,
-          address: formData.address!,
           startDate: formData.startDate,
           endDate: formData.endDate,
-          duration: formData.duration,
+          weblink: formData.weblink,
           present: formData.present,
           logoUrl,
-          createdAt: editingIndex !== null ? experiences[editingIndex].createdAt : new Date(),
+          createdAt: editingIndex !== null ? socialworks[editingIndex].createdAt : new Date(),
           updatedAt: new Date(),
         };
   
-        const updatedExperiences = [...experiences];
-        if (editingIndex !== null) updatedExperiences[editingIndex] = newExperience;
-        else updatedExperiences.push(newExperience);
+        const updatedSocialWorks = [...socialworks];
+        if (editingIndex !== null) updatedSocialWorks[editingIndex] = newSocialWork;
+        else updatedSocialWorks.push(newSocialWork);
   
-        await setDoc(experianceRef, { items: updatedExperiences });
-        setExperiences(updatedExperiences);
-        alert(editingIndex !== null ? "Experience details updated successfully!" : "Experience details added successfully!");
+        await setDoc(socialRef, { items: updatedSocialWorks });
+        setSocialWorks(updatedSocialWorks);
+        alert(editingIndex !== null ? "Social Activity details updated successfully!" : "Social Activity details added successfully!");
         setIsModalOpen(false);
         resetForm();
       } catch (err) {
         console.error(err);
-        //showToast("Failed to save education", "error");
-        alert("Failed to save experience details");
+        //showToast("Failed to save social activity", "error");
+        alert("Failed to save Social Activity details");
       }
     };
   
     const resetForm = () => {
       setFormData({
-        companyName: "",
+        soceityName: "",
         position: "",
-        projectInvolvement: "",
-        address: "",
         startDate: "",
         endDate: "",
-        duration: "",
+        weblink: "",
         present: false,
       });
       setPreview(null);
@@ -149,73 +138,37 @@ const SocialService: React.FC = () => {
       setEditingIndex(null);
     };
 
-    const handleEdit = (experience: Experience) => {
-      const index = experiences.findIndex((e) => e.id === experience.id);
+    const handleEdit = (socialwork: SocialWork) => {
+      const index = socialworks.findIndex((s) => s.id === socialwork.id);
       setEditingIndex(index);
-      setFormData({ ...experience });
-      setPreview(experience.logoUrl || null);
+      setFormData({
+        soceityName: socialwork.soceityName,
+        position: socialwork.position,
+        startDate: socialwork.startDate,
+        endDate: socialwork.endDate,
+        weblink: socialwork.weblink || "",
+        present: socialwork.present,
+      });
+      setPreview(socialwork.logoUrl || null);
       setIsModalOpen(true);
     };
     
     const handleDelete = async (id: string) => {
-      if (!confirm("Are you sure you want to delete this experience?")) return;
-      const updatedExperiences = experiences.filter((e) => e.id !== id);
-      await updateDoc(experianceRef, { items: updatedExperiences });
-      setExperiences(updatedExperiences);
-      //showToast("Education deleted!", "success");
-      alert("Experience details deleted successfully!");
+      if (!confirm("Are you sure you want to delete this record?")) return;
+      const updatedSocialWorks = socialworks.filter((e) => e.id !== id);
+      await updateDoc(socialRef, { items: updatedSocialWorks });
+      setSocialWorks(updatedSocialWorks);
+      //showToast("Social work society or clu deleted!", "success");
+      alert("Social work society or clu details deleted successfully!");
     };
 
   const handlePresentToggle = (checked: boolean) => {
-    setFormData((prev) => {
-      const updated = { ...prev, present: checked };
-      if (checked) updated.endDate = "";
-      updated.duration = calculateDuration(
-        updated.startDate,
-        checked ? new Date().toISOString().slice(0, 7) : updated.endDate
-      );
-      return updated;
-    });
+    setFormData((prev) => ({
+      ...prev,
+      present: checked,
+      endDate: checked ? "" : prev.endDate,
+    }));
   };
-
-  const handleDateChange = (field: string, value: string) => {
-    setFormData((prev) => {
-      const updated = { ...prev, [field]: value };
-
-      // Recalculate duration whenever start or end changes
-      if (updated.startDate && (updated.endDate || updated.present)) {
-        const endDate = updated.present ? new Date().toISOString().slice(0, 7) : updated.endDate;
-        updated.duration = calculateDuration(updated.startDate, endDate);
-      }
-
-      return updated;
-    });
-  };
-
-  // const calculateDuration = (start: string, end: string | undefined) => {
-  //   if (!start || !end) return "";
-  //   const startDate = new Date(start + "-01");
-  //   const endDate = new Date(end + "-01");
-  //   const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-  //   if (months < 0) return "";
-  //   const years = Math.floor(months / 12);
-  //   const remainingMonths = months % 12;
-  //   return `${years > 0 ? years + " year " : ""}${remainingMonths > 0 ? remainingMonths + " month" : ""}`;
-  // };
-
-  const calculateDuration = (start: string, end: string | undefined) => {
-    if (!start || !end) return "";
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    const months =
-      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
-      (endDate.getMonth() - startDate.getMonth());
-    if (months < 0) return "";
-    const years = Math.floor(months / 12);
-    const remainingMonths = months % 12;
-    return `${years > 0 ? years + " year " : ""}${remainingMonths > 0 ? remainingMonths + " month" : ""}`;
-  };
-
 
   return (
     //bg-white rounded-xl shadow-lg
@@ -229,21 +182,21 @@ const SocialService: React.FC = () => {
           }}
           className="bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700"
         >
-          + Add
+          + Add Soceity
         </button>
       </div>
 
-      {experiences.length === 0 && (
+      {socialworks.length === 0 && (
         <div className="text-center text-gray-500 mt-4 mb-6">
-          <p>No social service records yet. Add your first one.</p>
+          <p>No social work club or soceities or organization records yet. Add your first one.</p>
         </div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {experiences.map((experience) => (
-          <ExperienceCard
-            key={experience.id}
-            experience={experience}
+        {socialworks.map((social) => (
+          <SocialCard
+            key={social.id}
+            social={social}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
@@ -265,7 +218,7 @@ const SocialService: React.FC = () => {
             </button>
 
             <h3 className="text-xl font-semibold text-gray-700 mb-4">
-              {editingIndex !== null ? "Edit Experience" : "Add Experience"}
+              {editingIndex !== null ? "Edit Social Activity" : "Add Social Activity"}
             </h3>
 
             {toast && (
@@ -280,10 +233,10 @@ const SocialService: React.FC = () => {
 
               <input
                 type="text"
-                placeholder="Company Name"
-                value={formData.companyName}
+                placeholder="Soceity Name"
+                value={formData.soceityName}
                 onChange={(e) =>
-                  setFormData({ ...formData, companyName: e.target.value })
+                  setFormData({ ...formData, soceityName: e.target.value })
                 }
                 className="w-full border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
               />
@@ -298,40 +251,21 @@ const SocialService: React.FC = () => {
                 className="w-full border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
               />
 
-              <div>
-                <textarea
-                  rows={6}
-                  placeholder="Write about your experience and project involvement..."
-                  value={formData.projectInvolvement}
-                  onChange={(e) => setFormData({...formData, projectInvolvement: e.target.value})}
-                  className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-              </div>
-
-              <input
-                type="text"
-                placeholder="Address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="w-full border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
-              />
-
               <div className="flex space-x-2">
                 <input
-                  type="date"
+                  type="month"
                   placeholder="Start Date"
                   value={formData.startDate}
-                  onChange={(e) => handleDateChange("startDate", e.target.value)}
-                  //onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                  //onChange={(e) => handleDateChange("startDate", e.target.value)}
+                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                   className="w-1/2 border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
                 />
                 <input
-                  type="date"
+                  type="month"
                   placeholder="End Date"
                   value={formData.endDate}
-                  onChange={(e) => handleDateChange("endDate", e.target.value)}
-                  //onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  //className="w-1/2 border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
+                  //onChange={(e) => handleDateChange("endDate", e.target.value)}
+                  onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                   className={`w-1/2 border rounded px-3 py-2 focus:ring focus:ring-indigo-200 ${
                     formData.present ? "bg-gray-100 cursor-not-allowed" : ""
                   }`}
@@ -347,17 +281,16 @@ const SocialService: React.FC = () => {
                   onChange={(e) => handlePresentToggle(e.target.checked)}
                   className="mr-2"
                 />
-                <label htmlFor="present" className="text-gray-700">Currently working here</label>
+                <label htmlFor="present" className="text-gray-700">Currently i'm a member here</label>
               </div>
 
-                {/* <input
+                <input
                   type="text"
-                  placeholder="Duration"
-                  value={formData.duration}
-                  //onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                  readOnly
+                  placeholder="Weblink"
+                  value={formData.weblink}
+                  onChange={(e) => setFormData({ ...formData, weblink: e.target.value })}
                   className="w-full border rounded px-3 py-2 focus:ring focus:ring-indigo-200"
-                /> */}
+                />
 
               {/* Logo Upload */}
               <label className="relative flex flex-col items-center justify-center w-full h-35 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200">
@@ -370,7 +303,7 @@ const SocialService: React.FC = () => {
                 ) : (
                   <div className="text-center">
                     <span className="text-4xl text-gray-600">+</span>
-                    <p className="text-sm text-gray-500 mt-1">Add Company Logo</p>
+                    <p className="text-sm text-gray-500 mt-1">Add Soceity or Club Logo</p>
                   </div>
                 )}
                 <input
@@ -393,7 +326,7 @@ const SocialService: React.FC = () => {
                   type="submit"
                   className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
                 >
-                  {editingIndex !== null ? "Update Education" : "Save Education"}
+                  {editingIndex !== null ? "Update" : "Save"}
                 </button>
               </div>
             </form>

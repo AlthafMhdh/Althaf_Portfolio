@@ -37,7 +37,7 @@ const ExperienceSection: React.FC = () => {
   if (experiences.length === 0) return null;
 
   return (
-    <section id="experience" className="py-16 px-6">
+    <section id="experience" className="py-8 px-6">
       <h3 className="text-3xl font-bold mb-10 text-center">My Experience</h3>
 
       <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-1 gap-6">

@@ -49,7 +49,7 @@ const CertificationsSection: React.FC = () => {
     if (certificates.length === 0) return null;
 
     return (
-        <section id="certificates" className="py-16 px-6">
+        <section id="certificates" className="py-8 px-6">
             {/* <h3 className="text-3xl font-bold mb-10 text-center text-gray-800 dark:text-white">
                 My Certificates
             </h3> */}
@@ -99,29 +99,29 @@ const CertificationsSection: React.FC = () => {
 
 
             {/* Image Popup Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div
-            className="relative max-w-md w-100 mx-4 bg-white dark:bg-gray-900 rounded-lg p-1"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-3 right-3 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-            >
-              {/* ✕ */} <IoIosClose size={20}/>
-            </button>
-            <img
-              src={selectedImage}
-              alt="Certificate"
-              className="w-100 h-100 rounded-lg"
-            />
-          </div>
-        </div>
-      )}
+            {selectedImage && (
+                <div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+                onClick={() => setSelectedImage(null)}
+                >
+                    <div
+                        className="relative max-w-md w-100 mx-4 bg-white dark:bg-gray-900 rounded-lg p-1"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                        onClick={() => setSelectedImage(null)}
+                        className="absolute top-3 right-3 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                        >
+                        {/* ✕ */} <IoIosClose size={20}/>
+                        </button>
+                        <img
+                        src={selectedImage}
+                        alt="Certificate"
+                        className="w-100 h-100 rounded-lg"
+                        />
+                    </div>
+                </div>
+            )}
 
 
         </section>
