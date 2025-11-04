@@ -15,6 +15,7 @@ import { auth } from "../firebase/config";
 import Footer from "./components/footer";
 import SocialService from "./components/socialworks";
 import Achievements from "./components/AwardsandAchievement";
+import Settings from "./components/settings";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -80,6 +81,7 @@ const Dashboard = () => {
           {activePage === "Footer" && <Footer/>}
           {activePage === "Social & Club" && <SocialService/>}
           {activePage === "Awards & Achievements" && <Achievements/>}
+          {activePage === "Settings" && <Settings/>}
         </main>
       </div>
     </div>

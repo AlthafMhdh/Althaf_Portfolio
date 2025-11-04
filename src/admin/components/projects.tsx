@@ -61,7 +61,7 @@ const Projects: React.FC = () => {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!preview) newErrors.photo = "Profile photo is required.";
+    if (!preview) newErrors.photo = "Project photo is required.";
     if (!formData.projectName.trim()) newErrors.projectName = "Project Name is required.";
     if (!formData.about.trim()) newErrors.about = "About project is required.";
     if (!formData.technologies.trim()) newErrors.technologies = "Used technologies are required.";

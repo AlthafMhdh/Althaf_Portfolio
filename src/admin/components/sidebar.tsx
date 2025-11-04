@@ -22,6 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick, ac
     "Awards & Achievements",
     "Contact",
     "Footer",
+    "Settings",
     "Logout",
   ];
 
@@ -37,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar, onMenuClick, ac
       )}
     >
       {/* Sidebar Header */}
-      <div className="hidden md:flex items-center justify-center bg-gray-200 h-30 font-semibold">
+      <div className="hidden md:flex items-center justify-center bg-gray-200 h-20 font-semibold">
         {/* Customize Your Portfolio Website */}
       </div>
 
