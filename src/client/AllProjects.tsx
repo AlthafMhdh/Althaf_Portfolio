@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { db } from "../firebase/config";
 import { Link } from "react-router-dom";
+import { IoIosClose } from "react-icons/io";
 
 interface Project {
   id: string;
@@ -28,6 +29,7 @@ const AllProjects: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [footer, setFooter] = useState<any>(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const handleSecretClick = () => {
         setClickCount((prev) => {
@@ -208,6 +210,7 @@ const AllProjects: React.FC = () => {
                         src={project.photoUrl}
                         alt={project.projectName}
                         className="w-full h-48 object-cover"
+                        onClick={() => setSelectedImage(project.photoUrl || "/placeholder.jpg")}
                         />
                         <div className="p-4">
                             <h3 className="text-xl font-semibold mb-2">{project.projectName}</h3>
@@ -274,6 +277,33 @@ const AllProjects: React.FC = () => {
                 </p>
                 )}
             </footer>
+
+
+            {/* Image Popup Modal */}
+                        {selectedImage && (
+                            <div
+                                className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+                                onClick={() => setSelectedImage(null)}
+                            >
+                                <div
+                                    className="relative max-w-md w-100 mx-4 bg-white dark:bg-gray-900 rounded-lg p-1"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <button
+                                        onClick={() => setSelectedImage(null)}
+                                        className="absolute top-3 right-3 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                                    >
+                                        {/* ✕ */} <IoIosClose size={20}/>
+                                    </button>
+                                    <img
+                                        src={selectedImage}
+                                        alt="Project"
+                                        className="w-100 h-70 rounded-lg"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
         </div>
     );
 };

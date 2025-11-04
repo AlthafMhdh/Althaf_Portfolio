@@ -22,6 +22,7 @@ const Home: React.FC = () => {
   const [clickCount, setClickCount] = useState(0);
   const [showLogin, setShowLogin] = useState(false);
   const [footer, setFooter] = useState<any>(null);
+  const [settings, setSettings] = useState<any>(null);
 
   const handleSecretClick = () => {
     setClickCount((prev) => {
@@ -81,6 +82,17 @@ const Home: React.FC = () => {
     fetchFooter();
   }, []);
 
+  useEffect(() => {
+      const fetchSettings = async () => {
+        const docRef = doc(db, "portfolio", "settings");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setSettings(docSnap.data());
+        }
+      };
+      fetchSettings();
+    }, []);
+
  
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"} transition-all duration-300`}>
@@ -88,14 +100,37 @@ const Home: React.FC = () => {
       {/* <header className="flex justify-between items-center px-6 py-4 border-b border-gray-300 dark:border-gray-700"> */}
       <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 shadow-sm backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
         {/* <h1 className="text-2xl font-bold">Althaf Portfolio</h1> */}
-        <h1 className="text-2xl font-bold">
+        {/* <h1 className="text-2xl font-bold">
           <Link
             to="/"
             className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
           >
-            Althaf Portfolio
+            {settings.appName || `Althaf Portfolio`}
           </Link>
-        </h1>
+        </h1> */}
+
+        {settings ? (
+          <>
+            <h1 className="text-2xl font-bold">
+              <Link
+                to="/"
+                className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+              >
+                {settings.appName || `Althaf Portfolio`}
+              </Link>
+            </h1>
+          </>
+        ) : (
+          <h1 className="text-2xl font-bold">
+            <Link
+              to="/"
+              className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-300"
+            >
+              Althaf Portfolio
+            </Link>
+          </h1>
+        )}
+
         <div className="flex justify-between items-center gap-x-4 ">
 
           {showLogin ? (

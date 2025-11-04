@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
+import { IoIosClose } from "react-icons/io";
 
 interface Project {
   id: string;
@@ -17,6 +18,7 @@ interface Project {
 const ProjectsSection: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -66,9 +68,9 @@ const ProjectsSection: React.FC = () => {
         {/* <div className="overflow-x-auto scroll-smooth [scrollbar-width:none] [ms-overflow-style:none]">
             <div className="max-w-6xl mx-auto flex gap-6 px-2 [scrollbar-width:none]"> */}
 
-            <div className="flex justify-center">
-  <div className="w-full max-w-6xl overflow-x-auto scroll-smooth px-2 [scrollbar-width:none] [ms-overflow-style:none]">
-    <div className="flex gap-6">
+          <div className="flex justify-center">
+            <div className="w-full max-w-6xl overflow-x-auto scroll-smooth px-2 [scrollbar-width:none] [ms-overflow-style:none]">
+              <div className="flex gap-6">
 
             
 
@@ -81,6 +83,7 @@ const ProjectsSection: React.FC = () => {
                         src={project.photoUrl || "/placeholder.jpg"}
                         alt={project.projectName}
                         className="w-full h-40 object-cover rounded-t-2xl"
+                        onClick={() => setSelectedImage(project.photoUrl || "/placeholder.jpg")}
                     />
                     <div className="p-4">
                         <h4 className="text-lg font-semibold text-gray-800 dark:text-white">
@@ -134,6 +137,33 @@ const ProjectsSection: React.FC = () => {
             </div>
         </div>
         </div>
+
+
+        {/* Image Popup Modal */}
+          {selectedImage && (
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div
+                className="relative max-w-md w-100 mx-4 bg-white dark:bg-gray-900 rounded-lg p-1"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-3 right-3 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                >
+                  {/* ✕ */} <IoIosClose size={20}/>
+                </button>
+                <img
+                  src={selectedImage}
+                  alt="Project"
+                  className="w-100 h-70 rounded-lg"
+                />
+              </div>
+            </div>
+          )}
+                    
     </section>
   );
 };
